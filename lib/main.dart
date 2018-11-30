@@ -1,13 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'routes.dart';
 
+import 'package:colabore/models/usuario.dart';
+import 'package:colabore/data/database_helper.dart';
+import 'package:colabore/app_settings.dart';
+import 'routes.dart';
 import 'views/login_view.dart';
 
 
 void main() => runApp(MyApp());
 
+
 class MyApp extends StatelessWidget {
+
+  MyApp(){
+    getToken();
+  }
+
+  void getToken() async {
+    try {
+      var db = new DatabaseHelper();
+      var user = await db.getFistUser();
+      if (user != null) {
+        AppSettings.user = user;
+        AppSettings.token = user.accessToken;
+        debugPrint("main | carregou o token local ");
+      } else {
+        debugPrint("main | Erro ao obter token do sqlite");
+      }
+    }catch(e){
+      debugPrint("main | Erro ao obter token do sqlite e: "+e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +48,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.dark,
+        //brightness: Brightness.dark,
         primaryColor: Colors.lightBlue,
         //accentColor: Colors.lightBlue,
       ),

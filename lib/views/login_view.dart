@@ -38,7 +38,6 @@ class LoginViewState extends State<LoginView>
     if (form.validate()) {
       setState(() => _isLoading = true);
       form.save();
-
       _presenter.doLogin(_username, _password);
     }
   }

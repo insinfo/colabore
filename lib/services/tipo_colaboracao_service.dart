@@ -8,32 +8,33 @@ import 'package:colabore/data/database_helper.dart';
 import 'package:colabore/models/usuario.dart';
 
 class ColaboracaoService {
-  String token = "";
+
+  //singleton
+  //static final ColaboracaoService _internal = ColaboracaoService.internal();
+  //factory ColaboracaoService () => _internal;
+  //ColaboracaoService.internal();
+
+  String token = AppSettings.token;
   String message = "";
 
-  ColaboracaoService() {
-    var db = new DatabaseHelper();
-
-    db.getFistUser().then((Usuario user) {
-      token = user.accessToken;
-    }).catchError((Exception error) {
-      print(error.toString());
-    });
-  }
-
   /// lista todos os serviços / tipo de solicitação
-  Future<List<TipoColaboracao>> getAllTipo() async {
+  Future<List<TipoColaboracao>> getTiposColaboracao() async {
     try {
       // var dataToSender = {"userName": username, "password": password};
-      var header = {"User-Agent": AppSettings.userAgent};
+
+      var header = {
+        "User-Agent": AppSettings.userAgent,
+        "Authorization": "Bearer "+token
+      };
+
       var response =
           await http.get(AppSettings.rotaTipoColaboracoes, headers: header);
 
       if (response.statusCode == 200) {
         message = "Sucesso";
-        var tipoColRer =
-            TipoColaboracaoReq.fromJson(json.decode(response.body));
-        return tipoColRer.data;
+        var tipoColRer = TipoColaboracaoReq.fromJson(json.decode(response.body));
+        var data = tipoColRer.data;
+        return data;
       } else if (response.statusCode == 401) {
         message = "Credencial Inválida";
         return null;

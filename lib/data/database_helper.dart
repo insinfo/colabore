@@ -35,7 +35,7 @@ class DatabaseHelper {
     await db.execute(
         "CREATE TABLE Usuario("
         "id INTEGER PRIMARY KEY,"
-        "expiresIn TEXT,"
+        "expiresIn INTEGER,"
         "accessToken TEXT,"
         "fullName TEXT,"
         "loginName TEXT,"

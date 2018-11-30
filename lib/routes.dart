@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:colabore/views/login_view.dart';
 import 'package:colabore/views/home_view.dart';
+import 'package:colabore/views/main_page.dart';
 
 /*
 final routes = {
@@ -18,5 +19,5 @@ final routes = <String, WidgetBuilder>{
 
 final routes = <String, WidgetBuilder>{
   '/login': (context) => LoginView(),
-  '/home': (context) => HomeView(),
+  '/home': (context) => MainPage(),
 };

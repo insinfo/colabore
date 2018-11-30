@@ -16,7 +16,10 @@ class AuthService {
 
       if (response.statusCode == 200) {
         message = "Sucesso";
-        return Usuario.fromJson(json.decode(response.body));
+        var user = Usuario.fromJson(json.decode(response.body));
+        AppSettings.user = user;
+        AppSettings.token = user.accessToken;
+        return user;
       } else if (response.statusCode == 401) {
         message = "Credencial Inválida";
         return null;
