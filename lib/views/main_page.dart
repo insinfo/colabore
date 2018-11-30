@@ -15,7 +15,6 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
-
   MainPageViewModel viewModel;
   TabController tabController;
   BuildContext _ctx;
@@ -81,21 +80,28 @@ class _MainPageState extends State<MainPage>
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              child: Text('Menu'),
-              decoration: BoxDecoration(
-                color: Colors.blue,
+            UserAccountsDrawerHeader(
+              accountName: Text(AppSettings.user?.fullName),
+              accountEmail: Text(AppSettings.user?.loginName),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: NetworkImage(AppSettings.user?.getAvatarUrl()),
+                //child: Text('AH'),
               ),
-              padding: EdgeInsets.all(20),
+              /*decoration: BoxDecoration(
+                color: Colors.blue,
+              ),*/
+              //padding: EdgeInsets.all(20),
             ),
             ListTile(
+              leading: Icon(Icons.info),
               title: Text('Sobre'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: Text('Sair'),
+              leading: Icon(Icons.exit_to_app,color: Colors.blue,),
+              title: Text('Sair',style: TextStyle(),),
               onTap: () {
                 Navigator.pop(context);
                 AppSettings.logout(context);
@@ -106,8 +112,6 @@ class _MainPageState extends State<MainPage>
       ),
     );
   }
-
-
 
   @override
   void dispose() {

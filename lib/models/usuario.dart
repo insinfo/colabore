@@ -1,4 +1,4 @@
-
+import 'package:colabore/app_settings.dart';
 class Usuario{
 
   int expiresIn;
@@ -37,6 +37,12 @@ class Usuario{
       imagemPessoa: json['imagemPessoa'],
       cpfPessoa: json['cpfPessoa'],
     );
+  }
+
+  String getAvatarUrl(){
+    var url = AppSettings.webServiceBaseURL+imagemPessoa;
+    print(url);
+    return url;
   }
 
   Map<String, dynamic> toJson() => {
