@@ -16,7 +16,7 @@ class AppSettings {
   static Future logout(BuildContext context) async {
     var db = new DatabaseHelper();
     await db.deleteUsers();
-    await db.close();
+    //await db.close();
     Navigator.of(context).pushReplacementNamed("/login");
   }
 

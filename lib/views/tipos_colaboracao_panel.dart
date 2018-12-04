@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:colabore/models/tipo_colaboracao.dart';
 import 'package:colabore/view_models/main_page_view_model.dart';
-
+import 'package:colabore/views/tipo_colaboracao_list_item.dart';
 
 
 class TiposColaboracaoPanel extends StatelessWidget {
@@ -73,51 +73,3 @@ class NoInternetConnection extends StatelessWidget {
   }
 }
 
-class TipoColaboracaoListItem extends StatelessWidget {
-  final TipoColaboracao tipoColaboracao;
-
-  TipoColaboracaoListItem({@required this.tipoColaboracao});
-
-  @override
-  Widget build(BuildContext context) {
-
-    var title = Text(
-      tipoColaboracao?.nome,
-      style: TextStyle(
-        color: Colors.blue,
-        fontWeight: FontWeight.bold,
-        fontSize: 14,
-      ),
-    );
-
-    var subTitle = Row(
-      children: <Widget>[
-        Icon(
-          Icons.movie,
-          color: Colors.green,
-          size: 13,
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 4.0),
-          child: Text(
-            tipoColaboracao?.descricao,
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-        ),
-      ],
-    );
-
-    return Column(
-      children: <Widget>[
-        ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-          title: title,
-          subtitle: subTitle,
-        ),
-        Divider(),
-      ],
-    );
-  }
-}

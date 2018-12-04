@@ -34,6 +34,10 @@ class Colaboracao {
   String bairro;
   String rua;
   String solicitacaoNumero;
+ 
+  String get codigo{
+    return this.ano.toString()+this.numero.toString();
+  }
 
   Colaboracao(
       {this.id,
@@ -70,6 +74,8 @@ class Colaboracao {
         this.bairro,
         this.rua,
         this.solicitacaoNumero});
+
+
 
   Colaboracao.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -146,4 +152,7 @@ class Colaboracao {
     data['solicitacao_numero'] = this.solicitacaoNumero;
     return data;
   }
+
+
+
 }
