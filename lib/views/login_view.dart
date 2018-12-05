@@ -5,7 +5,7 @@ import 'package:colabore/auth.dart';
 import 'package:colabore/data/database_helper.dart';
 import 'package:colabore/models/usuario.dart';
 import 'package:colabore/views/login_screen_presenter.dart';
-
+import 'package:colabore/style.dart';
 
 class LoginView extends StatefulWidget {
 
@@ -148,7 +148,7 @@ class LoginViewState extends State<LoginView>
                       _submit();
                       // Navigator.of(context).pushNamed(HomePage.tag);
                     },
-                    color: Color(0xFF5fd0d0), //#5fd0d0
+                    color: AppStyle.buttonPrimary, //#5fd0d0
                     child: Text('ENTRAR', style: TextStyle(color: Colors.white)),
                   ),
                 ),

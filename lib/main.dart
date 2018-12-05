@@ -48,9 +48,9 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        //brightness: Brightness.dark,
+        brightness: Brightness.dark,
         primaryColor: Colors.blue,
-        //accentColor: Colors.lightBlue,
+       // accentColor: Colors.lightBlue,
       ),
       home: LoginView(),
       routes: routes,

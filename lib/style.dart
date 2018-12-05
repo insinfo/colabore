@@ -11,6 +11,6 @@ class AppStyle{
   static final tabIndicator = Color.fromRGBO(255, 255, 255,1);
   static final backgroundAppBar = Color.fromRGBO(58, 66, 86, 1.0);
   static final backgroundCard = Color.fromRGBO(64, 75, 96, .9);
-
+  static final buttonPrimary = Color.fromRGBO(99, 251, 215, .9);//Color(0xFF5fd0d0)
 
 }

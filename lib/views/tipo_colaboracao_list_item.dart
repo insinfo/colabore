@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:colabore/models/tipo_colaboracao.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:colabore/views/icons.dart';
+import 'package:colabore/views/colaborar_view.dart';
 
 class TipoColaboracaoListItem extends StatelessWidget {
   final TipoColaboracao tipoColaboracao;
@@ -46,7 +47,15 @@ class TipoColaboracaoListItem extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed("/colaborar");
+        //Navigator.of(context).pushNamed("/colaborar");
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ColaborarView(tipoColaboracao:tipoColaboracao)
+          ),
+        );
+
       },
       child: makeCard,
     );

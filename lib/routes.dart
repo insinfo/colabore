@@ -23,5 +23,5 @@ final routes = <String, WidgetBuilder>{
   '/login': (context) => LoginView(),
   '/home': (context) => MainPage(),
   '/sobre': (context) => SobreView(),
-  '/colaborar': (context) => ColaborarView(),
+  //'/colaborar': (context) => ColaborarView(),
 };
