@@ -39,9 +39,11 @@ class Usuario{
     );
   }
 
-  String getAvatarUrl(){
+  String get avatarUrl{
+    if(imagemPessoa == null || imagemPessoa == ""){
+      return null;
+    }
     var url = AppSettings.webServiceBaseURL+imagemPessoa;
-    print(url);
     return url;
   }
 

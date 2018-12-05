@@ -3,14 +3,13 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:colabore/models/tipo_colaboracao.dart';
 import 'package:colabore/view_models/main_page_view_model.dart';
 import 'package:colabore/views/tipo_colaboracao_list_item.dart';
-
+import 'package:colabore/style.dart';
 
 class TiposColaboracaoPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainPageViewModel>(
       builder: (context, child, model) {
-
         return FutureBuilder<List<TipoColaboracao>>(
           future: model.tiposColaboracao,
           builder: (_, AsyncSnapshot<List<TipoColaboracao>> snapshot) {
@@ -22,29 +21,27 @@ class TiposColaboracaoPanel extends StatelessWidget {
               case ConnectionState.waiting:
                 return Center(child: const CircularProgressIndicator());
               case ConnectionState.done:
-
                 if (snapshot.hasData) {
                   var tiposColaboracao = snapshot.data;
-                  return ListView.builder(
-                    itemCount:
-                        tiposColaboracao == null ? 0 : tiposColaboracao.length,
-                    itemBuilder: (_, int index) {
+                  return Container(
+                    color: AppStyle.backgroundDark,
+                    child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: tiposColaboracao == null ? 0 : tiposColaboracao
+                        .length,
+                    itemBuilder: (BuildContext context, int index) {
                       var tipoColaboracao = tiposColaboracao[index];
                       return TipoColaboracaoListItem(
                           tipoColaboracao: tipoColaboracao);
                     },
-                  );
-                } else if (snapshot.hasError)
-                {
+                  ),);
+                } else if (snapshot.hasError) {
                   return Center(child: Text("NoInternetConnection"));
                 }
-
-
             } // switch
           },
         );
-
-
       },
     );
   }

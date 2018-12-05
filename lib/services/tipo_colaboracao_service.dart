@@ -58,7 +58,7 @@ class ColaboracaoService {
       var url = AppSettings.rotaColaboracoes+"?operador="+ AppSettings.user.idPessoa.toString();
       var response =
           await http.get(url, headers: header);
-      print(response.body);
+
       if (response.statusCode == 200) {
         message = "Sucesso";
         var tipoColRer = ColaboracaoReq.fromJson(json.decode(response.body));

@@ -36,8 +36,23 @@ class Colaboracao {
   String solicitacaoNumero;
  
   String get codigo{
-    return this.ano.toString()+this.numero.toString();
+    return this.ano.toString()+this.solicitacaoNumero.toString();
   }
+
+  String get statusFinal{
+    return listStatus[this.minStatus];
+  }
+
+
+  final listStatus = [
+    "Aberto",
+    "Em andamento",
+    "Pendente",
+    "Concluido",
+    "Cancelado",
+    "Duplicado",
+    "Sem solução"
+  ];
 
   Colaboracao(
       {this.id,
@@ -74,7 +89,6 @@ class Colaboracao {
         this.bairro,
         this.rua,
         this.solicitacaoNumero});
-
 
 
   Colaboracao.fromJson(Map<String, dynamic> json) {
