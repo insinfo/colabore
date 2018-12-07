@@ -117,7 +117,7 @@ class ColaborarViewState extends State<ColaborarView> {
               child: new Text("Ok"),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed("/home");
               },
             ),
           ],
@@ -126,7 +126,7 @@ class ColaborarViewState extends State<ColaborarView> {
     );
   }
 
-  void _submit() async {
+  Future<bool> _submit() async {
     /* 
     print(currentLocation["latitude"]);
     print(currentLocation["longitude"]);
@@ -140,30 +140,36 @@ class ColaborarViewState extends State<ColaborarView> {
 
     if(_imageFile == null){
       _showSnackBar("Você não tirou uma foto!");
-      return;
-    }
-
-    setState(() => _isProcessing = true);
-    _currentLocation = await _location.getLocation();
-
-    if(_currentLocation == null){
-      _showSnackBar("Você não autorizou o uso da localização!");
-      return;
+      return false;
     }
 
     setState(() {
       _autoValidate = true;
+      _isProcessing = true;
     });
 
     if (form.validate()) {
-      setState(() => _saving = true);
+
+      setState(() {
+        _saving = true;
+      });
+
       form.save();
+
+       _currentLocation = await _location.getLocation();
+      if(_currentLocation == null){
+        setState(() {
+          _saving = false;
+        });
+        _showSnackBar("Você não autorizou o uso da localização!");
+        return false;
+      }
       //obtem as coordenadas de GPS
       colaborar.latitude = _currentLocation["latitude"];
       colaborar.longitude = _currentLocation["longitude"];
 
       //obtem a imagem data
-      List<int> imageBytes = _imageFile.readAsBytesSync();
+      List<int> imageBytes = await _imageFile.readAsBytes();
       var contentType = _imageFile.path.split(".").last;
       String header = 'data:image/$contentType;base64,';
       String base64Image = base64Encode(imageBytes);
@@ -185,7 +191,7 @@ class ColaborarViewState extends State<ColaborarView> {
     }else{
       _showSnackBar("Preencha os campos");
     }
-
+    return true;
   }
 
   List<Widget> _buildForm(BuildContext context) {
@@ -261,7 +267,7 @@ class ColaborarViewState extends State<ColaborarView> {
             new TextFormField(
               onSaved: (val) => colaborar.numero = int.tryParse(val),
               validator: (val) {
-                return val.length < 3
+                return val.length < 1
                     ? "Digite o número da casa mais proxima do local"
                     : null;
               },
