@@ -97,7 +97,7 @@ class ColaborarViewState extends State<ColaborarView> {
   File _imageFile;
   //3748 38562
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera,maxHeight: 480,maxWidth: 640,quality: 0.5);
+    var image = await ImagePicker.pickImage(source: ImageSource.camera,maxHeight: 480,maxWidth: 640,quality: 0.1);
 
     print( await image.length());
     setState(() {
