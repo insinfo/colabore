@@ -9,13 +9,15 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:path/path.dart';
 
-import 'package:image_picker/image_picker.dart';
+
 import 'package:colabore/widgets/modal_progress_indicator.dart';
 import 'package:location/location.dart';
 import 'package:colabore/services/tipo_colaboracao_service.dart';
 import 'package:colabore/models/colaborar.dart';
 import 'package:colabore/app_settings.dart';
 import 'package:colabore/widgets/dropdown_form_field.dart';
+
+import 'package:image_picker/image_picker.dart';
 
 class ColaborarView extends StatefulWidget {
   final TipoColaboracao tipoColaboracao;
@@ -75,7 +77,11 @@ class ColaborarViewState extends State<ColaborarView> {
       print(e.message);
       location = null;
     }
-    _startLocation = location;
+    _currentLocation = await _location.getLocation();
+    setState(() {
+      _startLocation = location;
+    });
+
   }
 
   ColaborarViewState({@required this.tipoColaboracao});
@@ -85,10 +91,11 @@ class ColaborarViewState extends State<ColaborarView> {
   var colaborar = new Colaborar();
 
   File _imageFile;
-
+  //3748 38562
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(source: ImageSource.camera,maxHeight: 480,maxWidth: 640,quality: 0.5);
 
+    print( await image.length());
     setState(() {
       _imageFile = image;
     });
@@ -144,7 +151,6 @@ class ColaborarViewState extends State<ColaborarView> {
     }
 
     setState(() => _isProcessing = true);
-    _currentLocation = await _location.getLocation();
 
     if(_currentLocation == null){
       _showSnackBar("Você não autorizou o uso da localização!");
@@ -158,6 +164,7 @@ class ColaborarViewState extends State<ColaborarView> {
     if (form.validate()) {
       setState(() => _saving = true);
       form.save();
+
       //obtem as coordenadas de GPS
       colaborar.latitude = _currentLocation["latitude"];
       colaborar.longitude = _currentLocation["longitude"];
@@ -174,7 +181,6 @@ class ColaborarViewState extends State<ColaborarView> {
       colaborar.idOperador = AppSettings.user.idPessoa;
       colaborar.idSolicitante = AppSettings.user.idPessoa;
       colaborar.idSetor = tipoColaboracao.idSetor;
-
       await apiRest.postNewColaboracao(colaborar);
 
       setState(() {

@@ -1,4 +1,5 @@
-
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Colaboracao {
   int id;
@@ -44,6 +45,21 @@ class Colaboracao {
     return listStatus[this.minStatus];
   }
 
+  String get abertoEm{
+
+    if(dataAbertura != null) {
+      var parsedDate = DateTime.parse(dataAbertura);
+      var formatter = new DateFormat('dd/MM/yyyy');
+      return formatter.format(parsedDate);
+    }
+
+    return "";
+  }
+
+  MaterialColor get statusFinalColor{
+    return listStatusColor[this.minStatus];
+  }
+
 
   final listStatus = [
     "Aberto",
@@ -53,6 +69,16 @@ class Colaboracao {
     "Cancelado",
     "Duplicado",
     "Sem solução"
+  ];
+
+  final listStatusColor = [
+    Colors.blue,//"Aberto",
+    Colors.amber,// "Em andamento",
+    Colors.purpleAccent,//"Pendente",
+    Colors.green,//"Concluido",
+    Colors.red,//"Cancelado",
+    Colors.deepOrange,//"Duplicado"
+    Colors.white//"Sem solução"
   ];
 
   Colaboracao(
