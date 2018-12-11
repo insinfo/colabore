@@ -12,6 +12,7 @@ class Colaborar {
   String observacao = "";
   var status = 1;
   String imagem = "";
+  String imagemPath;
 
   double latitude = 123.1233;
   double longitude = 2345.23489;

@@ -100,6 +100,12 @@ class ColaboracaoService {
         'build/package.tar.gz',
         contentType: new MediaType('application', 'x-tar'),
       ));*/
+      if(newColaboracao.imagemPath != null) {
+        var file = await http.MultipartFile.fromPath(
+            'file', newColaboracao.imagemPath);
+        request.files.add(file);
+      }
+
       var response = await request.send();
       var responseData = await response.stream.bytesToString(utf8);
 

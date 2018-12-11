@@ -173,13 +173,14 @@ class ColaborarViewState extends State<ColaborarView> {
       colaborar.latitude = _currentLocation["latitude"];
       colaborar.longitude = _currentLocation["longitude"];
 
-      //obtem a imagem data
-      List<int> imageBytes = await _imageFile.readAsBytes();
+      //obtem a imagem data URL
+      /*List<int> imageBytes = await _imageFile.readAsBytes();
       var contentType = _imageFile.path.split(".").last;
       String header = 'data:image/$contentType;base64,';
       String base64Image = base64Encode(imageBytes);
       String imageDataURL = header+base64Image;
-      colaborar.imagem = imageDataURL;
+      colaborar.imagem = imageDataURL;*/
+      colaborar.imagemPath = _imageFile.path;
 
       colaborar.idServico = tipoColaboracao.id;
       colaborar.idOperador = AppSettings.user.idPessoa;
