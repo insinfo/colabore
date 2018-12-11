@@ -121,7 +121,7 @@ class CadastroViewState extends State<CadastroView> {
           children: <Widget>[
 
             //bairro
-            DropdownFormField<String>(
+           /* DropdownFormField<String>(
               validator: (value) {
                 if (value == null) {
                   return 'Selecione o Bairro';
@@ -141,11 +141,11 @@ class CadastroViewState extends State<CadastroView> {
                   child: Text(value),
                 );
               }).toList(),
-            ),
+            ),*/
 
             //CPF
             TextFormField(
-             // onSaved: (val) => colaborar.rua = val,
+              // onSaved: (val) => colaborar.rua = val,
               validator: (val) {
                 return Utils.validarCPF(val)
                     ? null
@@ -162,6 +162,28 @@ class CadastroViewState extends State<CadastroView> {
                 LengthLimitingTextInputFormatter(11),
                 WhitelistingTextInputFormatter.digitsOnly,
               ],
+            ),
+
+
+            //telefone
+            TextFormField(
+              // onSaved: (val) => colaborar.rua = val,
+              validator: (val) {
+                return val.length < 8
+                    ? null
+                    : "Digite o seu telefone!";
+              },
+              decoration: InputDecoration(
+                icon: Icon(Icons.picture_in_picture),
+                hintText: 'Digite o seu telefone',
+                labelText: 'Telefone',
+              ),
+              keyboardType: TextInputType.phone,
+              //maxLength: 11,
+              /*inputFormatters: [
+                LengthLimitingTextInputFormatter(11),
+                WhitelistingTextInputFormatter.digitsOnly,
+              ],*/
             ),
 
             //email
@@ -227,7 +249,7 @@ class CadastroViewState extends State<CadastroView> {
               },
               //onSaved: (val) => teste = val,
               decoration: InputDecoration(
-                icon: Icon(Icons.add_location),
+                icon: Icon(Icons.find_replace),
                 border: UnderlineInputBorder(),
                 // filled: true,
                 labelText: 'Sexo',
@@ -279,7 +301,7 @@ class CadastroViewState extends State<CadastroView> {
               ],
             ),
 
-
+            //aceitar os termos
             CheckboxListTile(
               value: isAcceptedTerms,
               onChanged: (val){setState(() {
@@ -298,7 +320,7 @@ class CadastroViewState extends State<CadastroView> {
 
             //botão
             Container(
-                padding: EdgeInsets.only(left: 0, top: 20.0),
+                padding: EdgeInsets.only(left: 0, top: 10.0,bottom: 20),
                 child: RaisedButton(
                   color: AppStyle.buttonPrimary,
                   child: Text('Cadastrar'),

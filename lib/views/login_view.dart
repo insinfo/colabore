@@ -146,9 +146,8 @@ class LoginViewState extends State<LoginView>
                   child:  RaisedButton(
                     onPressed: () {
                       _submit();
-                      // Navigator.of(context).pushNamed(HomePage.tag);
                     },
-                    color: AppStyle.buttonPrimary, //#5fd0d0
+                    color: Color(0xFF52c7f8), //#5fd0d0
                     child: Text('ENTRAR', style: TextStyle(color: Colors.white)),
                   ),
                 ),
@@ -255,7 +254,7 @@ class LoginViewState extends State<LoginView>
                               onPressed: () {
                                  Navigator.of(context).pushNamed('/cadastro');
                               },
-                              color: Color(0xFF5fd0d0), //#5fd0d0
+                              color: Color(0xFF71db9c), //#5fd0d0
                               child: Text('CADASTRAR', style: TextStyle(color: Colors.white)),
                             ),
                           ),
