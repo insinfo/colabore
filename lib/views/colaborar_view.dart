@@ -95,11 +95,10 @@ class ColaborarViewState extends State<ColaborarView> {
   var colaborar = new Colaborar();
 
   File _imageFile;
-  //3748 38562
-  Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera,maxHeight: 480,maxWidth: 640,quality: 0.1);
 
-    print( await image.length());
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera,maxWidth: 640,maxHeight: 480,quality: 0.1);
+
     setState(() {
       _imageFile = image;
     });
@@ -203,7 +202,7 @@ class ColaborarViewState extends State<ColaborarView> {
     Form form = Form(
         key: _formKey,
         autovalidate: _autoValidate,
-        child: new ListView(
+        child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           children: <Widget>[
             //botão para obter foto
@@ -338,4 +337,6 @@ class ColaborarViewState extends State<ColaborarView> {
       ),
     );
   }
+
+
 }

@@ -14,8 +14,8 @@ class Colaborar {
   String imagem = "";
   String imagemPath;
 
-  double latitude = 123.1233;
-  double longitude = 2345.23489;
+  double latitude = -22.52727105;
+  double longitude = -41.95030478;
   String bairro = "";
   String rua = "";
   var numero = 624;

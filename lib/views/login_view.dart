@@ -253,8 +253,7 @@ class LoginViewState extends State<LoginView>
                             height: 40,
                             child:  RaisedButton(
                               onPressed: () {
-
-                                // Navigator.of(context).pushNamed(HomePage.tag);
+                                 Navigator.of(context).pushNamed('/cadastro');
                               },
                               color: Color(0xFF5fd0d0), //#5fd0d0
                               child: Text('CADASTRAR', style: TextStyle(color: Colors.white)),

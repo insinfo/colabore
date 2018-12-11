@@ -15,8 +15,12 @@ class AppSettings {
   static String token = "";
 
   static Future logout(BuildContext context) async {
-    var db = new DatabaseHelper();
-    await db.deleteUsers();
+    try {
+      var db = new DatabaseHelper();
+      await db.deleteUsers();
+    }catch(Ex){
+      print("erro ao sair");
+    }
     //await db.close();
     Navigator.of(context).pushReplacementNamed("/login");
   }
