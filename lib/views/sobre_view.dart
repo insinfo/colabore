@@ -145,7 +145,23 @@ class SobreViewState extends State<SobreView> {
                   "O projeto já estava enorme e foi divido em 3 fases de conclusões e entregas para que mais pessoas pudessem participar. A equipe concordou que a plataforma merecia um novo nome. Levando em conta a história da cidade e também pensando em um plataforma de peso que englobava outros sistemas, surgiu o nome Jubarte!",
                 fontSize: 12
             ),
-            SizedBox(height: 50,)
+            SizedBox(height: 50,),
+
+            Center(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(125, 5, 125, 0),
+                  child: Image.asset('assets/logo-pmro-2018-cinza.png'),
+                )
+            ),
+
+            Center(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(120, 5, 120, 50),
+                  child: Text("Desenvolvido pela COTINF",
+                    style: TextStyle(fontSize: 12,color: AppStyle.textDark),
+                  ),
+                )
+            ),
           ],
         )));
   } //fim metodo build

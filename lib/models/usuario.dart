@@ -41,7 +41,7 @@ class Usuario{
 
   String get avatarUrl{
     if(imagemPessoa == null || imagemPessoa == ""){
-      return null;
+      return null;//"https://jubarte.riodasostras.rj.gov.br/cdn/Assets/icons/userNoImage.jpg";
     }
     var url = AppSettings.webServiceBaseURL+imagemPessoa;
     return url;

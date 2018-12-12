@@ -4,6 +4,7 @@ import 'package:colabore/services/tipo_colaboracao_service.dart';
 
 import 'package:colabore/view_models/main_page_view_model.dart';
 import 'package:colabore/models/tipo_colaboracao.dart';
+import 'package:colabore/app_settings.dart';
 
 class HomeView extends StatelessWidget {
   @override
@@ -16,17 +17,7 @@ class HomeView extends StatelessWidget {
       body: new Center(
         child: RaisedButton(child: Text("teste"), 
             onPressed: () async {
-             /* var apiRest = new ColaboracaoService();
-              var t = apiRest.getTiposColaboracao();
-              t.then((List<TipoColaboracao> res) {
-                print(res.first.descricao);
-              });*/
-
-              /*var v = MainPageViewModel();
-              await v.setTiposColaboracao();
-              var list = await v.tiposColaboracao;
-              print(list.length);
-              print("sada");*/
+              AppSettings.logout(context);
             }),
       ),
     );

@@ -24,4 +24,5 @@ final routes = <String, WidgetBuilder>{
   '/home': (context) => MainPage(),
   '/sobre': (context) => SobreView(),
   '/cadastro': (context) => CadastroView(),
+  '/teste': (context) => HomeView(),
 };

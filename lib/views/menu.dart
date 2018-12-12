@@ -20,8 +20,12 @@ class MenuPrincipal extends StatelessWidget {
               accountName: Text(AppSettings.user?.fullName),
               accountEmail: Text(AppSettings.user?.loginName),
               currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(AppSettings.user?.avatarUrl),
-                child: AppSettings.user?.avatarUrl == null ?  Text('AH') : null,
+                backgroundImage:
+                AppSettings.user?.avatarUrl == null ?
+                AssetImage('assets/userAvatar.png')
+                : NetworkImage(AppSettings.user?.avatarUrl),
+
+                //child: AppSettings.user?.avatarUrl == null ?  Text('AH') : null,
               ),
               decoration: BoxDecoration(
                 color: AppStyle.backgroundDark,

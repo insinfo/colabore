@@ -29,6 +29,7 @@ dependencies:
   scoped_model: ^0.3.0
   font_awesome_flutter: ^8.2.0
   location: ^1.4.1
+  url_launcher: ^4.0.2
   #image_picker: ^0.4.10
   image_picker:
     path: ../image_picker
@@ -56,6 +57,10 @@ flutter:
   assets:
   - assets/jubarteLogo.png
   - assets/profile_header_background.png
+  - assets/userAvatar.png
+  - assets/jubarteAppLogoBranco.png
+  - assets/logo-pmro-2018-cinza.png
+  - assets/pmro2018-logo.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

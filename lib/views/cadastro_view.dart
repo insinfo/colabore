@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:colabore/models/tipo_colaboracao.dart';
 import 'package:colabore/style.dart';
@@ -11,6 +12,7 @@ import 'package:colabore/widgets/modal_progress_indicator.dart';
 import 'package:colabore/utils/utils.dart';
 import 'package:colabore/utils/email_validator.dart';
 import 'package:colabore/utils/birth_date_text_input_formatter.dart';
+import 'package:colabore/models/cadastro_user_req.dart';
 
 class CadastroView extends StatefulWidget {
 
@@ -28,6 +30,10 @@ class CadastroViewState extends State<CadastroView> {
   List<String> _bairros = <String>['', 'red', 'green', 'blue', 'orange'];
   List<String> _sexos = <String>['Masculino', 'Feminino'];
   bool isAcceptedTerms = false;
+
+  var cadastroUserReq = new CadastroUserReq();
+
+  final senhaController = TextEditingController();
 
   @override
   void initState() {
@@ -58,7 +64,7 @@ class CadastroViewState extends State<CadastroView> {
         .showSnackBar(new SnackBar(content: new Text(text)));
   }
 
-  void _showDialog(String message) {
+  void _showDialog(String message,{Function callback}) {
     // flutter defined function
     showDialog(
       context: _ctx,
@@ -73,6 +79,9 @@ class CadastroViewState extends State<CadastroView> {
               child: new Text("Ok"),
               onPressed: () {
                 Navigator.of(context).pop();
+                if(callback != null){
+                  callback();
+                }
                // Navigator.of(context).pushNamed("/home");
               },
             ),
@@ -86,10 +95,10 @@ class CadastroViewState extends State<CadastroView> {
 
     final form = _formKey.currentState;
 
-    if("" == null){
+    /*if("" == null){
       _showSnackBar("Você não tirou uma foto!");
       return false;
-    }
+    }*/
 
     if (form.validate()) {
 
@@ -99,12 +108,42 @@ class CadastroViewState extends State<CadastroView> {
 
       form.save();
 
-      //await apiRest.postNewColaboracao(colaborar);
+      var mensagem ="";
 
-      setState(() {
-        _saving = false;
-      });
-      _showDialog("teste");
+      var result = await apiRest.postNewUser(cadastroUserReq);
+      if(result != null){
+        var necessarioAtivacao = result["necessarioAtivacao"];
+        if(necessarioAtivacao == true){
+          setState(() { _saving = false; });
+
+          mensagem = "Detectamos que estes dados já esta cadastrado na nossa base de dados, entre no seu email: "+
+          result["emailAtivacao"] +
+          " para fazer a ativação do seu cadastro.";
+
+          _showDialog(mensagem,callback: () async {
+
+            Navigator.of(context).pushReplacementNamed("/login");
+
+            const url = 'https://accounts.google.com/ServiceLogin?hl=pt-BR&passive=true&continue=https://www.google.com.br/';
+
+            /*if (await canLaunch(url)) {
+                await launch(url);
+            }*/
+
+          });
+        }else{
+          var use = await AppSettings.login(context, cadastroUserReq.pessoa.email, cadastroUserReq.usuario.senha);
+          if(use == null){
+            _showDialog("Erro ao logar automaticamente, tente logar");
+            Navigator.of(context).pushReplacementNamed("/login");
+          }
+        }
+
+      }else{
+        mensagem = apiRest.message;
+        setState(() { _saving = false; });
+        _showDialog(mensagem);
+      }
 
     }else{
       _showSnackBar("Preencha os campos");
@@ -145,7 +184,10 @@ class CadastroViewState extends State<CadastroView> {
 
             //CPF
             TextFormField(
-              // onSaved: (val) => colaborar.rua = val,
+               onSaved: (val) {
+                 cadastroUserReq.pessoa.cpf = val;
+                 print(cadastroUserReq.pessoa.cpf);
+               },
               validator: (val) {
                 return Utils.validarCPF(val)
                     ? null
@@ -167,15 +209,17 @@ class CadastroViewState extends State<CadastroView> {
 
             //telefone
             TextFormField(
-              // onSaved: (val) => colaborar.rua = val,
+              onSaved: (val) {
+                cadastroUserReq.pessoa.telefone = val.trim();
+              },
               validator: (val) {
-                return val.length < 8
-                    ? null
-                    : "Digite o seu telefone!";
+                return val.trim().length < 8
+                    ? "Digite o seu telefone com DDD!"
+                    : null;
               },
               decoration: InputDecoration(
-                icon: Icon(Icons.picture_in_picture),
-                hintText: 'Digite o seu telefone',
+                icon: Icon(Icons.phone),
+                hintText: 'Digite o telefone ex. 22997012222',
                 labelText: 'Telefone',
               ),
               keyboardType: TextInputType.phone,
@@ -188,15 +232,18 @@ class CadastroViewState extends State<CadastroView> {
 
             //email
             TextFormField(
+              onSaved: (val) {
+                cadastroUserReq.pessoa.email = val.trim();
+              },
               decoration: InputDecoration(
                 icon: Icon(Icons.mail),
                 hintText: 'Digite o seu email valido',
                 labelText: 'Email',
               ),
-              validator: (val) => !EmailValidator.validate(val, true,true)
+              validator: (val) => !EmailValidator.validate(val.trim(), true,true)
                   ? 'Não é um email válido!'
                   : null,
-              //onSaved: (val) => _email = val,
+
               keyboardType: TextInputType.emailAddress,
               //maxLength: 80,
               inputFormatters: [
@@ -206,15 +253,18 @@ class CadastroViewState extends State<CadastroView> {
 
             //nome
             TextFormField(
+              onSaved: (val) {
+                cadastroUserReq.pessoa.nome = val.trim();
+              },
               decoration: InputDecoration(
                 icon: Icon(Icons.person),
                 hintText: 'Digite o seu nome completo',
                 labelText: 'Nome',
               ),
-              validator: (val) => val.length < 11
+              validator: (val) => val.trim().length < 11
                   ? 'O nome deve ter pelo menos 11 caracteres'
                   : null,
-              //onSaved: (val) => _email = val,
+
               keyboardType: TextInputType.text,
               //maxLength: 80,
               inputFormatters: [
@@ -224,15 +274,18 @@ class CadastroViewState extends State<CadastroView> {
 
             //data nascimento
             TextFormField(
+              onSaved: (val) {
+                cadastroUserReq.pessoa.dataNascimento = val.trim();
+              },
               decoration: InputDecoration(
                 icon: Icon(Icons.calendar_today),
                 hintText: 'Digite a data de seu nascimento',
                 labelText: 'Nascimento',
               ),
-              validator: (val) => val.length < 11
+              validator: (val) => val.length < 10
                   ? 'Digite uma data valida!'
                   : null,
-              //onSaved: (val) => _email = val,
+
               keyboardType: TextInputType.datetime,
               //maxLength: 80,
               inputFormatters: [
@@ -242,12 +295,14 @@ class CadastroViewState extends State<CadastroView> {
 
             //sexo
             DropdownFormField<String>(
+              onSaved: (val) {
+                cadastroUserReq.pessoa.sexo = val;
+              },
               validator: (value) {
                 if (value == null) {
                   return 'Selecione o sexo';
                 }
               },
-              //onSaved: (val) => teste = val,
               decoration: InputDecoration(
                 icon: Icon(Icons.find_replace),
                 border: UnderlineInputBorder(),
@@ -265,15 +320,21 @@ class CadastroViewState extends State<CadastroView> {
 
             //senha
             TextFormField(
+              controller: senhaController,
+              onSaved: (val) {
+                cadastroUserReq.usuario.senha = val;
+              },
               decoration: InputDecoration(
                 icon: Icon(Icons.vpn_key),
                 hintText: 'Digite uma senha para acesso',
                 labelText: 'Senha',
               ),
-              validator: (val) => val.length < 8
+              validator: (val)
+              {
+                return val.length < 8
                   ? 'Digite uma senha com 8 caracteres!'
-                  : null,
-              //onSaved: (val) => _email = val,
+                  : null;
+              },
               keyboardType: TextInputType.text,
               obscureText:true,
               //maxLength: 80,
@@ -284,15 +345,24 @@ class CadastroViewState extends State<CadastroView> {
 
             //repita senha
             TextFormField(
+              onSaved: (val) {
+                cadastroUserReq.usuario.resenha = val;
+              },
               decoration: InputDecoration(
                 icon: Icon(Icons.vpn_key),
                 hintText: 'Repita a senha para acesso',
                 labelText: 'Repita a Senha',
               ),
-              validator: (val) => val.length < 8
-                  ? 'Digite uma senha com 8 caracteres!'
-                  : null,
-              //onSaved: (val) => _email = val,
+              validator: (val)
+              {
+                if(val.length < 8){
+                  return 'Digite uma senha com 8 caracteres!';
+                }else if(val != senhaController.text){
+                  return 'As senhas não são igauis!';
+                }else{
+                  return null;
+                }
+              },
               keyboardType: TextInputType.text,
               obscureText:true,
               //maxLength: 80,
@@ -304,13 +374,17 @@ class CadastroViewState extends State<CadastroView> {
             //aceitar os termos
             CheckboxListTile(
               value: isAcceptedTerms,
-              onChanged: (val){setState(() {
-                if(isAcceptedTerms == true){
-                  isAcceptedTerms = false;
-                }else {
-                  isAcceptedTerms = true;
-                }
-              });},
+              onChanged:(val){
+                setState(() {
+                  if(isAcceptedTerms == true){
+                    isAcceptedTerms = false;
+                  }else {
+                    isAcceptedTerms = true;
+                  }
+                  cadastroUserReq.termos = "on";//isAcceptedTerms; //? 1 : 0;
+                  print(cadastroUserReq.termos);
+                });
+              },
               title: new Text('Aceitar os termos'),
               controlAffinity: ListTileControlAffinity.leading,
              // subtitle: new Text('Subtitle'),
@@ -328,6 +402,22 @@ class CadastroViewState extends State<CadastroView> {
                 )
             ),
 
+
+            Center(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(120, 5, 120, 0),
+                  child: Image.asset('assets/pmro2018-logo.png'),
+                )
+            ),
+
+            Center(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(115, 2, 115, 50),
+                  child: Text("Desenvolvido pela COTINF",
+                    style: TextStyle(fontSize: 10),
+                  ),
+                )
+            ),
 
           ],
         ));
@@ -359,6 +449,12 @@ class CadastroViewState extends State<CadastroView> {
     );
   }
 
+  @override
+  void dispose() {
+    // Clean up the controller when the Widget is disposed
+    senhaController.dispose();
+    super.dispose();
+  }
 
       /*new TextFormField(
         decoration: const InputDecoration(

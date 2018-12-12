@@ -11,6 +11,7 @@ class AuthService {
     try {
       var loginData = {"userName": username, "password": password};
       var header = {"User-Agent": AppSettings.userAgent};
+
       var response = await http.post(AppSettings.rotaLogin,
           headers: header, body: loginData);
 
@@ -24,10 +25,10 @@ class AuthService {
         message = "Credencial Inválida";
         return null;
       } else if (response.statusCode == 400) {
-        message = "Erro no servidor";
+        message = "Erro no servidor, tente mais tarde.";
         return null;
       } else {
-        message = "Erro no servidor";
+        message = "Erro no servidor ou você pode estar sem internet.";
         return null;
       }
     } catch (e) {

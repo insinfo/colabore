@@ -9,6 +9,7 @@ import 'package:colabore/models/usuario.dart';
 import 'package:colabore/models/colaboracao_req.dart';
 import 'package:colabore/models/colaboracao.dart';
 import 'package:colabore/models/colaborar.dart';
+import 'package:colabore/models/cadastro_user_req.dart';
 
 class ColaboracaoService {
 
@@ -19,6 +20,7 @@ class ColaboracaoService {
 
   String token = AppSettings.token;
   String message = "";
+  int statusCode;
   Map<String,String> header = {
         "User-Agent": AppSettings.userAgent,
         "Authorization": "Bearer "+AppSettings.token
@@ -135,6 +137,46 @@ class ColaboracaoService {
       return false;
     }
     return true;
+  }
+
+  /// cria uma nova colaboração
+  Future<Map<String,dynamic>> postNewUser(CadastroUserReq newUser) async {
+    try {
+
+      var dataToSend = jsonEncode(newUser.toJson());
+      print("json abaixo");
+     // print(dataToSend);
+      var h = {"User-Agent": AppSettings.userAgent, "Content-Type": "application/json"};
+
+      var response =
+      await http.post(AppSettings.rotaCriaUsuario, headers: h,body: dataToSend);
+      print(response.body);
+
+      statusCode = response.statusCode;
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        message = "Sucesso";
+        return data["data"];
+      } else if (response.statusCode == 401) {
+        message = "Credencial Inválida";
+        return null;
+      } else if (response.statusCode == 409) {
+        message = "Usuário já existe, se você esqueceu sua senha, tente alterar a senha no botão \"Esqueceu sua senha?\" na tela de login";
+        return null;
+      } else if (response.statusCode == 400) {
+        message = "Erro no servidor";
+        return null;
+      } else {
+        message = "Erro no servidor";
+        return null;
+      }
+    } catch (e) {
+      message = "Erro de internet";
+      print(e.toString());
+      return null;
+    }
+    return null;
   }
 
   Future<List<String>> getBairros() async {

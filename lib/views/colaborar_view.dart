@@ -287,11 +287,11 @@ class ColaborarViewState extends State<ColaborarView> {
 
             new TextFormField(
               onSaved: (val) => colaborar.descricao = val,
-              validator: (val) {
+              /*validator: (val) {
                 return val.length < 3
                     ? "Preencha com uma breve descrição"
                     : null;
-              },
+              },*/
               decoration: const InputDecoration(
                 icon: const Icon(Icons.comment),
                 hintText: 'Preencha com uma breve descrição',
@@ -304,10 +304,31 @@ class ColaborarViewState extends State<ColaborarView> {
             Container(
                 padding: EdgeInsets.only(left: 0, top: 20.0),
                 child: RaisedButton(
-                  color: AppStyle.buttonPrimary,
-                  child: Text('Colaborar'),
+                  color: AppStyle.buttonBlue,
+                  child: Text('COLABORAR'),
                   onPressed: _submit,
-                )),
+                )
+            ),
+
+
+            Center(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(125, 50, 125, 0),
+                  child: Image.asset('assets/pmro2018-logo.png'),
+                )
+            ),
+
+            Center(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(120, 2, 120, 50),
+                  child: Text("Desenvolvido pela COTINF",
+                    style: TextStyle(fontSize: 10),
+                  ),
+                )
+            ),
+
+
+
           ],
         ));
 
