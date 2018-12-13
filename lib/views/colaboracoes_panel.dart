@@ -43,7 +43,7 @@ class ColaboracoesPanel extends StatelessWidget {
     return FutureBuilder<List<Colaboracao>>(
       future: _model.colaboracoes,
       builder: (_, AsyncSnapshot<List<Colaboracao>> snapshot) {
-        print("teste");
+
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return Center(child: Text('Presione o botão para iniciar'));
