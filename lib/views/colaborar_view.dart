@@ -219,12 +219,12 @@ class ColaborarViewState extends State<ColaborarView> {
       ),
       layers: [
         new TileLayerOptions(
-          urlTemplate: "https://api.tiles.mapbox.com/v4/"
-              "{id}/{z}/{x}/{y}@2x.png?access_token=${AppSettings.mapboxAccessToken}",
+          /*urlTemplate: "https://api.tiles.mapbox.com/v4/""{id}/{z}/{x}/{y}@2x.png?access_token=${AppSettings.mapboxAccessToken}",
           additionalOptions: {
             'accessToken': '<${AppSettings.mapboxAccessToken}>',
             'id': 'mapbox.streets',
-          },
+          },*/
+          urlTemplate:"http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
         ),
 
         new MarkerLayerOptions(
