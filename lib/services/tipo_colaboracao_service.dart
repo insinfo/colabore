@@ -57,7 +57,7 @@ class ColaboracaoService {
   }
 
   /// lista todos os serviços / tipo de solicitação
-  Future<List<Colaboracao>> getColaboracoes({offset=0,limit=3}) async {
+  Future<List<Colaboracao>> getColaboracoes({offset=0,limit=50,page=0}) async {
     try {
       var limite = limit;
       var inicio = offset;
@@ -66,24 +66,24 @@ class ColaboracaoService {
           await http.get(url, headers: header);
       print(response.statusCode);
       if (response.statusCode == 200) {
-        message = "Sucesso";
+        message = AppStrings.sucesso;
         var tipoColRer = ColaboracaoReq.fromJson(json.decode(response.body));
         var data = tipoColRer.data;
         return data;
       } else if (response.statusCode == 401) {
-        message = "Credencial Inválida";
+        message = AppStrings.credencialInvalida;
         return null;
       } else if (response.statusCode == 400) {
-        message = "Erro no servidor";
+        message = AppStrings.falhaAoObterDados;
         return null;
       } else {
-        message = "Erro no servidor";
+        message = AppStrings.falhaAoObterDados;
         return null;
       }
     } catch (e) {
 
       print("erro ao obter dados ");
-      message = "Erro de internet";
+      message = AppStrings.falhaAoObterDados;
       print(e.hashCode);
       print(e.toString());
       return null;
@@ -128,17 +128,17 @@ class ColaboracaoService {
 
         return true;
       } else if (response.statusCode == 401) {
-        message = "Credencial Inválida";
+        message = AppStrings.credencialInvalida;
         return false;
       } else if (response.statusCode == 400) {
-        message = "Erro no servidor";
+        message = AppStrings.falhaAoObterDados;
         return false;
       } else {
-        message = "Erro no servidor";
+        message = AppStrings.falhaAoObterDados;
         return false;
       }
     } catch (e) {
-      message = "Erro de internet";
+      message = AppStrings.falhaAoObterDados;
       print(e.toString());
       return false;
     }
@@ -162,23 +162,23 @@ class ColaboracaoService {
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        message = "Sucesso";
+        message = AppStrings.sucesso;
         return data["data"];
       } else if (response.statusCode == 401) {
-        message = "Credencial Inválida";
+        message = AppStrings.credencialInvalida;
         return null;
       } else if (response.statusCode == 409) {
-        message = "Usuário já existe, se você esqueceu sua senha, tente alterar a senha no botão \"Esqueceu sua senha?\" na tela de login";
+        message = AppStrings.usuarioJaExiste;
         return null;
       } else if (response.statusCode == 400) {
-        message = "Erro no servidor";
+        message = AppStrings.falhaAoObterDados;
         return null;
       } else {
-        message = "Erro no servidor";
+        message = AppStrings.falhaAoObterDados;
         return null;
       }
     } catch (e) {
-      message = "Erro de internet";
+      message = AppStrings.falhaAoObterDados;
       print(e.toString());
       return null;
     }
