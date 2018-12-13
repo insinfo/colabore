@@ -16,6 +16,7 @@ class AppSettings {
   static final userAgent = "appjubarte";
   static Usuario user;
   static String token = "";
+  static final mapboxAccessToken = "pk.eyJ1IjoicG1ybyIsImEiOiJjanBiZmFsaXIwZTJhM2tudW41dDQwbmF3In0.4F5dsSSKPpQ0RamUb47CKw";
 
   static Future logout(BuildContext context) async {
     try {

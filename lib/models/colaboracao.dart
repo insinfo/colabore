@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Colaboracao {
+
+
   int id;
   int ano;
   String numero;
@@ -36,6 +38,7 @@ class Colaboracao {
   String bairro;
   String rua;
   String solicitacaoNumero;
+
  
   String get codigo{
     return this.ano.toString()+this.solicitacaoNumero.toString();

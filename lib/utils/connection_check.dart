@@ -10,7 +10,9 @@ class ConnectionCheck{
     var result = false;
 
     try {
+
       var connectivityResult = await (new Connectivity().checkConnectivity());
+
       if (connectivityResult == ConnectivityResult.mobile) {
         result = true;
       } else if (connectivityResult == ConnectivityResult.wifi) {
@@ -18,7 +20,10 @@ class ConnectionCheck{
       }
 
       if(result) {
-        final internet = await InternetAddress.lookup('google.com');
+
+        final internet = await InternetAddress.lookup('google.com')
+            .timeout(new Duration(seconds: 5));
+
         if (internet.isNotEmpty && internet[0].rawAddress.isNotEmpty) {
           result = true;
         }

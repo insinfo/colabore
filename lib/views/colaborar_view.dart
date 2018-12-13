@@ -1,23 +1,26 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:colabore/models/tipo_colaboracao.dart';
-import 'package:colabore/style.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:path/path.dart';
-
-
-import 'package:colabore/widgets/modal_progress_indicator.dart';
 import 'package:location/location.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong/latlong.dart';
+
+import 'package:colabore/models/tipo_colaboracao.dart';
+import 'package:colabore/style.dart';
+import 'package:colabore/widgets/modal_progress_indicator.dart';
 import 'package:colabore/services/tipo_colaboracao_service.dart';
 import 'package:colabore/models/colaborar.dart';
 import 'package:colabore/app_settings.dart';
 import 'package:colabore/widgets/dropdown_form_field.dart';
 
-import 'package:image_picker/image_picker.dart';
+
 
 class ColaborarView extends StatefulWidget {
   final TipoColaboracao tipoColaboracao;
@@ -39,6 +42,9 @@ class ColaborarViewState extends State<ColaborarView> {
 
   Map<String, double> _startLocation;
   Map<String, double> _currentLocation;
+  double latitude = -22.5272718;
+  double longitude = -41.95030867;
+
   StreamSubscription<Map<String, double>> _locationSubscription;
   Location _location = new Location();
   bool _permission = false;
@@ -66,9 +72,18 @@ class ColaborarViewState extends State<ColaborarView> {
       _permission = await _location.hasPermission();
       location = await _location.getLocation();
 
+
       setState(() {
 
       });
+
+      _currentLocation = await _location.getLocation();
+      setState(() {
+        _startLocation = location;
+      });
+
+      latitude = location["latitude"] != null ? location["latitude"] : -22.5272718;
+      longitude = location["longitude"] !=null ? location["longitude"] : -41.95030867;
 
       error = null;
     } on PlatformException catch (e) {
@@ -81,11 +96,6 @@ class ColaborarViewState extends State<ColaborarView> {
       print(e.message);
       location = null;
     }
-    _currentLocation = await _location.getLocation();
-    setState(() {
-      _startLocation = location;
-    });
-
   }
 
   ColaborarViewState({@required this.tipoColaboracao});
@@ -198,6 +208,43 @@ class ColaborarViewState extends State<ColaborarView> {
     return true;
   }
 
+  Widget _buildMap(BuildContext context) {
+
+    var pos = new LatLng(latitude,longitude);
+
+    return new FlutterMap(
+      options: new MapOptions(
+        center: pos,
+        zoom: 16,
+      ),
+      layers: [
+        new TileLayerOptions(
+          urlTemplate: "https://api.tiles.mapbox.com/v4/"
+              "{id}/{z}/{x}/{y}@2x.png?access_token=${AppSettings.mapboxAccessToken}",
+          additionalOptions: {
+            'accessToken': '<${AppSettings.mapboxAccessToken}>',
+            'id': 'mapbox.streets',
+          },
+        ),
+
+        new MarkerLayerOptions(
+          markers: [
+            new Marker(
+              width: 80.0,
+              height: 80.0,
+              point: pos,
+              builder: (ctx) =>
+              new Container(
+                child: Icon(Icons.location_on,color: Colors.red,size: 40,),
+              ),
+            ),
+          ],
+        ),
+
+      ],
+    );
+  }
+
   List<Widget> _buildForm(BuildContext context) {
     Form form = Form(
         key: _formKey,
@@ -206,7 +253,6 @@ class ColaborarViewState extends State<ColaborarView> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           children: <Widget>[
             //botão para obter foto
-
             Ink(
               decoration: BoxDecoration(
                 //border: Border.all(color: Colors.indigoAccent, width: 2),
@@ -295,12 +341,20 @@ class ColaborarViewState extends State<ColaborarView> {
               decoration: const InputDecoration(
                 icon: const Icon(Icons.comment),
                 hintText: 'Preencha com uma breve descrição',
-                labelText: 'Descrição',
+                labelText: 'Descrição (opcional)',
               ),
               keyboardType: TextInputType.multiline,
               maxLines: 3,
             ),
 
+            //mapa
+            Container(
+              width: 150,height: 180,
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: _buildMap(context),
+            ),
+
+            //botão
             Container(
                 padding: EdgeInsets.only(left: 0, top: 20.0),
                 child: RaisedButton(
@@ -355,6 +409,7 @@ class ColaborarViewState extends State<ColaborarView> {
       backgroundColor: AppStyle.backgroundDark, //#3b4455
       body: new Stack(
         children: _buildForm(context),
+        //children: <Widget>[_buildMap(context),],
       ),
     );
   }
