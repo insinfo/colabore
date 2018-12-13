@@ -12,6 +12,8 @@ import 'package:colabore/style.dart';
 import 'package:colabore/views/colaboracao_list_item.dart';
 import 'package:colabore/views/colaboracoes_panel.dart';
 
+import 'package:colabore/utils/connection_check.dart';
+
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
@@ -28,7 +30,16 @@ class _MainPageState extends State<MainPage>
     super.initState();
     viewModel = new MainPageViewModel();
     tabController = TabController(vsync: this, length: 2);
+    isInternet();
     loadData();
+  }
+
+  Future isInternet() async{
+   var r = await ConnectionCheck.isInternet();
+   ConnectionCheck.asInternet = r;
+   if(r == false) {
+     Navigator.of(_ctx).pushNamed("/noInternet");
+   }
   }
 
   Future loadData() async {

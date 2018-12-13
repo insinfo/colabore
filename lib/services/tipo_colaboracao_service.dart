@@ -10,6 +10,7 @@ import 'package:colabore/models/colaboracao_req.dart';
 import 'package:colabore/models/colaboracao.dart';
 import 'package:colabore/models/colaborar.dart';
 import 'package:colabore/models/cadastro_user_req.dart';
+import 'package:colabore/app_strings.dart';
 
 class ColaboracaoService {
 
@@ -34,34 +35,36 @@ class ColaboracaoService {
           await http.get(AppSettings.rotaTipoColaboracoes, headers: header);
 
       if (response.statusCode == 200) {
-        message = "Sucesso";
+        message = AppStrings.sucesso;
         var tipoColRer = TipoColaboracaoReq.fromJson(json.decode(response.body));
         var data = tipoColRer.data;
         return data;
       } else if (response.statusCode == 401) {
-        message = "Credencial Inválida";
+        message = AppStrings.credencialInvalida;
         return null;
       } else if (response.statusCode == 400) {
-        message = "Erro no servidor";
+        message = AppStrings.falhaAoObterDados;
         return null;
       } else {
-        message = "Erro no servidor";
+        message = AppStrings.falhaAoObterDados;
         return null;
       }
     } catch (e) {
-      message = "Erro de internet";
+      message = AppStrings.falhaAoObterDados;
       print(e.toString());
       return null;
     }
   }
 
   /// lista todos os serviços / tipo de solicitação
-  Future<List<Colaboracao>> getColaboracoes() async {
-    try {      
-      var url = AppSettings.rotaColaboracoes+"?operador="+ AppSettings.user.idPessoa.toString();
+  Future<List<Colaboracao>> getColaboracoes({offset=0,limit=3}) async {
+    try {
+      var limite = limit;
+      var inicio = offset;
+      String url = "${AppSettings.rotaColaboracoes}?operador=${AppSettings.user.idPessoa.toString()}&limit=${limite.toString()}&offset=${inicio.toString()}";
       var response =
           await http.get(url, headers: header);
-
+      print(response.statusCode);
       if (response.statusCode == 200) {
         message = "Sucesso";
         var tipoColRer = ColaboracaoReq.fromJson(json.decode(response.body));
@@ -78,7 +81,10 @@ class ColaboracaoService {
         return null;
       }
     } catch (e) {
+
+      print("erro ao obter dados ");
       message = "Erro de internet";
+      print(e.hashCode);
       print(e.toString());
       return null;
     }

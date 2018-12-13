@@ -7,6 +7,7 @@ import 'package:colabore/app_settings.dart';
 import 'routes.dart';
 import 'views/login_view.dart';
 
+import 'package:colabore/utils/connection_check.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +15,14 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
 
   MyApp(){
+    isInternet();
     getToken();
+  }
+
+  Future isInternet() async{
+    var r = await ConnectionCheck.isInternet();
+    print(r);
+    ConnectionCheck.asInternet = r;
   }
 
   void getToken() async {

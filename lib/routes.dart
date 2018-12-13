@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:colabore/views/login_view.dart';
-import 'package:colabore/views/home_view.dart';
+import 'package:colabore/views/no_internet_view.dart';
 import 'package:colabore/views/main_page.dart';
 import 'package:colabore/views/sobre_view.dart';
 import 'package:colabore/views/colaborar_view.dart';
@@ -24,5 +24,5 @@ final routes = <String, WidgetBuilder>{
   '/home': (context) => MainPage(),
   '/sobre': (context) => SobreView(),
   '/cadastro': (context) => CadastroView(),
-  '/teste': (context) => HomeView(),
+  '/noInternet': (context) => NoInternetView(),
 };
