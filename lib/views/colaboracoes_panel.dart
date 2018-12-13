@@ -10,6 +10,27 @@ class ColaboracoesPanel extends StatelessWidget {
   MainPageViewModel _model;
   BuildContext _context;
   var _refreshKey = GlobalKey<RefreshIndicatorState>();
+  var _scrollController = new ScrollController();
+
+  void _state(){
+    _scrollController.addListener(
+            () {
+
+              if(_scrollController != null){
+
+                double maxScroll = _scrollController.position.maxScrollExtent;
+                double currentScroll = _scrollController.position.pixels;
+                double delta = 0; // or something else..
+                if ( maxScroll - currentScroll <= delta) { // whatever you determine here
+                    //.. load more
+                    print("fim da lista  load more 2");
+                }
+
+              }
+
+            }
+        );
+  }
 
   Future _refresh() async {
       _refreshKey.currentState?.show();
@@ -23,6 +44,7 @@ class ColaboracoesPanel extends StatelessWidget {
       builder: (context, child, model) {
         _model = model;
         _context = context;
+        _state();
 
         return FutureBuilder<List<Colaboracao>>(
           future: model.colaboracoes,
@@ -49,11 +71,12 @@ class ColaboracoesPanel extends StatelessWidget {
                     child: RefreshIndicator(
                     onRefresh: _refresh,
                       child: ListView.builder(
-                      itemCount: colaboracoes == null ? 0 : colaboracoes.length,
-                      itemBuilder: (_, int index) {
-                        var colaboracao = colaboracoes[index];
-                        return ColaboracaoListItem(colaboracao: colaboracao);
-                      },
+                        controller: _scrollController,
+                        itemCount: colaboracoes == null ? 0 : colaboracoes.length,
+                        itemBuilder: (_, int index) {
+                          var colaboracao = colaboracoes[index];
+                          return ColaboracaoListItem(colaboracao: colaboracao);
+                        },
                     ),
                     )
                   );
