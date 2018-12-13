@@ -36,6 +36,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      debugShowMaterialGrid: false,
       title: 'Colabore',
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -45,8 +47,7 @@ class MyApp extends StatelessWidget {
         const Locale('es', 'ES'),
         const Locale('en', 'US'),
         const Locale('pt', 'BR')
-      ],
-      debugShowCheckedModeBanner: false,
+      ],     
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.blue,
