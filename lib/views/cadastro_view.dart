@@ -134,7 +134,7 @@ class CadastroViewState extends State<CadastroView> {
         }else{
           var use = await AppSettings.login(context, cadastroUserReq.pessoa.email, cadastroUserReq.usuario.senha);
           if(use == null){
-            _showDialog("Erro ao logar automaticamente, tente logar");
+            _showDialog("Erro ao logar automaticamente, tente logar manualmente.");
             Navigator.of(context).pushReplacementNamed("/login");
           }
         }
