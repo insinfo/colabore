@@ -13,6 +13,9 @@ import 'package:colabore/views/colaboracao_list_item.dart';
 import 'package:colabore/views/colaboracoes_panel.dart';
 
 import 'package:colabore/utils/connection_check.dart';
+import 'dart:io';
+import 'dart:async';
+import 'package:simple_permissions/simple_permissions.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -24,6 +27,8 @@ class _MainPageState extends State<MainPage>
   MainPageViewModel viewModel;
   TabController tabController;
   BuildContext _ctx;
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+
 
   @override
   void initState() {
@@ -32,6 +37,30 @@ class _MainPageState extends State<MainPage>
     tabController = TabController(vsync: this, length: 2);
     isInternet();
     loadData();
+    initPlatformState();
+  }
+
+  initPlatformState() async {
+    try {
+
+      //SimplePermissions.requestPermission(Permission.AccessFineLocation);
+      var re = await SimplePermissions.requestPermission(Permission.AlwaysLocation);
+
+      print(re);
+      /*_isLocationPermission = await _location.hasPermission();
+      var location = await _location.getLocation();
+      _locationSubscription = _location.onLocationChanged().listen(_onLocationChange);
+      _currentLocation = await _location.getLocation();*/
+
+
+    }catch(e){
+    }
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
+    tabController?.dispose();
   }
 
   Future isInternet() async{
@@ -47,11 +76,17 @@ class _MainPageState extends State<MainPage>
     await viewModel.setColaboracoes();
   }
 
+  void _showSnackBar(String text) {
+    _scaffoldKey.currentState
+        .showSnackBar(new SnackBar(content: new Text(text)));
+  }
+
   @override
   Widget build(BuildContext context) {
     _ctx = context;
 
     return Scaffold(
+      key: _scaffoldKey,
         appBar: AppBar(
           elevation: 0.1,
           backgroundColor: AppStyle.backgroundAppBar,
@@ -88,9 +123,5 @@ class _MainPageState extends State<MainPage>
         drawer: MenuPrincipal());
   }
 
-  @override
-  void dispose() {
-    tabController?.dispose();
-    super.dispose();
-  }
+
 }

@@ -33,6 +33,7 @@ dependencies:
   connectivity: ^0.3.2
   flutter_map: ^0.1.4
   latlong: ^0.6.1
+  simple_permissions: ^0.1.9
   #image_picker: ^0.4.10
   image_picker:
     path: ../image_picker

@@ -45,7 +45,7 @@ class DatabaseHelper {
         "imagemPessoa TEXT,"
         "cpfPessoa TEXT)"
         );
-    print("Created tables");
+
   }
 
   Future<int> saveUser(Usuario user) async {

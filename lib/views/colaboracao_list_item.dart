@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:colabore/models/colaboracao.dart';
 import 'package:colabore/style.dart';
 import 'package:intl/intl.dart';
+import 'package:colabore/views/detalhe_colaboracao.dart';
 
 class ColaboracaoListItem extends StatelessWidget {
   final Colaboracao colaboracao;
@@ -23,7 +24,7 @@ class ColaboracaoListItem extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            //linha 1
+            //mumero 1
             Row(children: <Widget>[
               Text(
                 "Nº:  ",
@@ -31,6 +32,21 @@ class ColaboracaoListItem extends StatelessWidget {
               ),
               Text(
                 colaboracao?.codigo,
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              )
+            ]),
+
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+            ),
+
+            Row(children: <Widget>[
+              Text(
+                "Serviço:  ",
+                style: TextStyle(color: AppStyle.textMedium, fontSize: 12),
+              ),
+              Text(
+                colaboracao?.servico_nome,
                 style: TextStyle(color: Colors.white, fontSize: 14),
               )
             ]),
@@ -59,7 +75,7 @@ class ColaboracaoListItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
             ),
-            //linha 3
+            //rua
             Row(children: <Widget>[
               Text(
                 "Rua:  ",
@@ -70,25 +86,24 @@ class ColaboracaoListItem extends StatelessWidget {
                 style: TextStyle(color: AppStyle.textLight, fontSize: 14),
               )
             ]),
-
-            Container(
+            Padding(
               padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "Bairro:  ",
-                      textAlign: TextAlign.start,
-                      style:
-                          TextStyle(color: AppStyle.textMedium, fontSize: 12),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                    ),
-                    Text(colaboracao.bairro,
-                        style: TextStyle(color: Colors.white, fontSize: 12))
-                  ]),
             ),
+
+            Row(children: <Widget>[
+              Text(
+                "Bairro:  ",
+                style: TextStyle(color: AppStyle.textMedium, fontSize: 12),
+              ),
+              Text(
+                colaboracao?.bairro,
+                style: TextStyle(color: AppStyle.textLight, fontSize: 14),
+              )
+            ]),
+
+
+
+
           ],
         ),
         subtitle: Container(
@@ -115,7 +130,8 @@ class ColaboracaoListItem extends StatelessWidget {
                   ),
                 ]),
               ],
-            )),
+            )
+        ),
         /*trailing: Icon(Icons.keyboard_arrow_right,
             color: AppStyle.textLight, size: 30.0)*/
     );
@@ -162,6 +178,21 @@ class ColaboracaoListItem extends StatelessWidget {
           )),
     );
 
-    return makeCard;
+
+    return InkWell(
+      onTap: () {
+        //Navigator.of(context).pushNamed("/detalheColaboracao");
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DetalheColaboracaoView(colaboracao:colaboracao)
+          ),
+        );
+
+      },
+      child: makeCard,
+    );
+
   }
 }

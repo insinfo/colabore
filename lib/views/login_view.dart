@@ -1,10 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:colabore/auth.dart';
 import 'package:colabore/data/database_helper.dart';
 import 'package:colabore/models/usuario.dart';
-import 'package:colabore/views/login_screen_presenter.dart';
+
 import 'package:colabore/style.dart';
 import 'package:colabore/services/auth_service.dart';
 

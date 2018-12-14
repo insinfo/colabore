@@ -34,6 +34,8 @@ class ColaboracaoService {
       var response =
           await http.get(AppSettings.rotaTipoColaboracoes, headers: header);
 
+
+
       if (response.statusCode == 200) {
         message = AppStrings.sucesso;
         var tipoColRer = TipoColaboracaoReq.fromJson(json.decode(response.body));
@@ -64,7 +66,8 @@ class ColaboracaoService {
       String url = "${AppSettings.rotaColaboracoes}?operador=${AppSettings.user.idPessoa.toString()}&limit=${limite.toString()}&offset=${inicio.toString()}";
       var response =
           await http.get(url, headers: header);
-      print(response.statusCode);
+
+
       if (response.statusCode == 200) {
         message = AppStrings.sucesso;
         var tipoColRer = ColaboracaoReq.fromJson(json.decode(response.body));
@@ -150,13 +153,12 @@ class ColaboracaoService {
     try {
 
       var dataToSend = jsonEncode(newUser.toJson());
-      print("json abaixo");
-     // print(dataToSend);
+
       var h = {"User-Agent": AppSettings.userAgent, "Content-Type": "application/json"};
 
       var response =
       await http.post(AppSettings.rotaCriaUsuario, headers: h,body: dataToSend);
-      print(response.body);
+
 
       statusCode = response.statusCode;
 

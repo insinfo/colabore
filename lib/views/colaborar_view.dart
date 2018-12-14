@@ -21,7 +21,6 @@ import 'package:colabore/app_settings.dart';
 import 'package:colabore/widgets/dropdown_form_field.dart';
 
 
-
 class ColaborarView extends StatefulWidget {
   final TipoColaboracao tipoColaboracao;
 
@@ -29,7 +28,6 @@ class ColaborarView extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return new ColaborarViewState(tipoColaboracao: tipoColaboracao);
   }
 }
@@ -38,7 +36,7 @@ class ColaborarViewState extends State<ColaborarView> {
   BuildContext _ctx;
   final TipoColaboracao tipoColaboracao;
   List<String> _bairros = <String>["Centro", "Ancora"];
-  var apiRest = new ColaboracaoService();
+  ColaboracaoService apiRest = new ColaboracaoService();
 
   Map<String, double> _startLocation;
   Map<String, double> _currentLocation;
@@ -47,7 +45,7 @@ class ColaborarViewState extends State<ColaborarView> {
 
   StreamSubscription<Map<String, double>> _locationSubscription;
   Location _location = new Location();
-  bool _permission = false;
+  bool _isLocationPermission = false;
   String error;
   bool _autoValidate = false;
 
@@ -55,35 +53,44 @@ class ColaborarViewState extends State<ColaborarView> {
   void initState() {
     super.initState();
     initPlatformState();
-    _locationSubscription =
-        _location.onLocationChanged().listen((Map<String, double> result) {
-        _currentLocation = result;
-    });
+
+  }
+
+  _onLocationChange(Map<String, double> location) {
+      _currentLocation = location;
+      setState(() {
+        print("onLocationChanged");
+        latitude = location["latitude"] != null ? location["latitude"] : -22.5272718;
+        longitude = location["longitude"] != null ? location["longitude"] : -41.95030867;
+      });
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
+    _locationSubscription.cancel();
   }
 
   initPlatformState() async {
     Map<String, double> location;
 
     try {
+
       var bairros = await apiRest.getBairros();
       setState(() {
         _bairros = bairros;
       });
-      _permission = await _location.hasPermission();
+
+      _isLocationPermission = await _location.hasPermission();
       location = await _location.getLocation();
-
-
-      setState(() {
-
-      });
-
+      setState(() {});
+      _locationSubscription = _location.onLocationChanged().listen(_onLocationChange);
       _currentLocation = await _location.getLocation();
       setState(() {
         _startLocation = location;
+        latitude = _currentLocation != null ? _currentLocation["latitude"] : -22.5272718;
+        longitude = _currentLocation !=null ? _currentLocation["longitude"] : -41.95030867;
       });
-
-      latitude = location["latitude"] != null ? location["latitude"] : -22.5272718;
-      longitude = location["longitude"] !=null ? location["longitude"] : -41.95030867;
 
       error = null;
     } on PlatformException catch (e) {
@@ -215,9 +222,10 @@ class ColaborarViewState extends State<ColaborarView> {
     return new FlutterMap(
       options: new MapOptions(
         center: pos,
-        zoom: 16,
+        zoom: 18,
       ),
       layers: [
+
         new TileLayerOptions(
           /*urlTemplate: "https://api.tiles.mapbox.com/v4/""{id}/{z}/{x}/{y}@2x.png?access_token=${AppSettings.mapboxAccessToken}",
           additionalOptions: {
@@ -245,6 +253,38 @@ class ColaborarViewState extends State<ColaborarView> {
     );
   }
 
+  _buildButtonTakePhoto(){
+    return Ink(
+      decoration: BoxDecoration(
+        //border: Border.all(color: Colors.indigoAccent, width: 2),
+        color: Colors.lightBlue,
+        shape: BoxShape.circle,
+      ),
+      child: InkWell(
+        //This keeps the splash effect within the circle
+        borderRadius: BorderRadius.circular(1000.0),
+        //Something large to ensure a circle
+        onTap: getImage,
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Icon(
+            Icons.photo_camera,
+            size: 30.0,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildPhotoPreview(){
+    return Container(
+      width: 150,height: 180,
+      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+      child: Image.file(_imageFile),
+    );
+  }
+
   List<Widget> _buildForm(BuildContext context) {
     Form form = Form(
         key: _formKey,
@@ -253,27 +293,7 @@ class ColaborarViewState extends State<ColaborarView> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           children: <Widget>[
             //botão para obter foto
-            Ink(
-              decoration: BoxDecoration(
-                //border: Border.all(color: Colors.indigoAccent, width: 2),
-                color: Colors.lightBlue,
-                shape: BoxShape.circle,
-              ),
-              child: InkWell(
-                //This keeps the splash effect within the circle
-                borderRadius: BorderRadius.circular(1000.0),
-                //Something large to ensure a circle
-                onTap: getImage,
-                child: Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Icon(
-                    Icons.photo_camera,
-                    size: 30.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+            _imageFile == null ? _buildButtonTakePhoto() : _buildPhotoPreview(),
 
             //bairro
             DropdownFormField<String>(

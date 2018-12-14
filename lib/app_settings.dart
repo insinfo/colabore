@@ -2,7 +2,6 @@ import 'package:colabore/models/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:colabore/data/database_helper.dart';
 import 'dart:async';
-import 'package:colabore/auth.dart';
 import 'package:colabore/services/auth_service.dart';
 
 class AppSettings {

@@ -1,68 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import 'package:colabore/models/anexo.dart';
+import 'package:colabore/app_settings.dart';
 class Colaboracao {
-
-
   int id;
-  int ano;
-  String numero;
-  int idOrganograma;
-  int idSolicitante;
-  int idSolicitantesec;
-  int idEquipamento;
-  int idOperador;
-  String descricao;
-  String observacao;
-  String dataAbertura;
-  String dataFechamento;
-  int prioridade;
-  int atendimentoIni;
-  int totalAtendimentos;
-  int minStatus;
-  String statusAtendimentos;
-  String setorResponsavelSigla;
-  String setorResponsavelNome;
-  String siglaOrganograma;
-  String nomeOrganograma;
-  String nomeSolicitante;
-  String cpfSolicitante;
-  String historicoAtendimento;
-  String idsAtendimento;
-  String usuariosEnvolvidosAtendimento;
-  String pessoasEnvolvidasHistorico;
-  String idsUsuario;
-  String idsSetorResponsavel;
   String latitude;
   String longitude;
   String bairro;
   String rua;
-  String solicitacaoNumero;
+  String numero;
+  int ano;
+  String solicitacao_numero;
+  String descricao;
+  String observacao;
+  String dataAbertura;
+  String dataFechamento;
+  int atendimentoIni;
+  int totalAtendimentos;
+  int minStatus;
+  String servico_nome;
+  String servico_icone;
+  String servico_cor;
+  Anexo anexo;
 
- 
-  String get codigo{
-    return this.ano.toString()+this.solicitacaoNumero.toString();
+  String get codigo {
+    return this.ano.toString() + this.solicitacao_numero.toString();
   }
 
-  String get statusFinal{
+  double get getLatitude {
+    return double.parse(latitude);
+  }
+
+  double get getLongitude {
+    return double.parse(longitude);
+  }
+
+  String get statusFinal {
     return listStatus[this.minStatus];
   }
 
-  String get abertoEm{
+  String get imageUrl{
 
-    if(dataAbertura != null) {
+    if(anexo != null){
+      if(anexo.url != null){
+        return AppSettings.webServiceBaseURL + anexo.url;
+      }
+    }
+    return null;
+  }
+
+  String get abertoEm {
+    if (dataAbertura != null) {
       var parsedDate = DateTime.parse(dataAbertura);
       var formatter = new DateFormat('dd/MM/yyyy');
       return formatter.format(parsedDate);
     }
-
     return "";
   }
 
-  MaterialColor get statusFinalColor{
-    return listStatusColor[this.minStatus];
+  String get fechadoEm {
+    if (dataFechamento != null) {
+      var parsedDate = DateTime.parse(dataFechamento);
+      var formatter = new DateFormat('dd/MM/yyyy');
+      return formatter.format(parsedDate);
+    }
+    return "-----";
   }
 
+  MaterialColor get statusFinalColor {
+    return listStatusColor[this.minStatus];
+  }
 
   final listStatus = [
     "Aberto",
@@ -75,128 +82,66 @@ class Colaboracao {
   ];
 
   final listStatusColor = [
-    Colors.blue,//"Aberto",
-    Colors.amber,// "Em andamento",
-    Colors.purpleAccent,//"Pendente",
-    Colors.green,//"Concluido",
-    Colors.red,//"Cancelado",
-    Colors.deepOrange,//"Duplicado"
-    Colors.white//"Sem solução"
+    Colors.blue, //"Aberto",
+    Colors.amber, // "Em andamento",
+    Colors.purpleAccent, //"Pendente",
+    Colors.green, //"Concluido",
+    Colors.red, //"Cancelado",
+    Colors.deepOrange, //"Duplicado"
+    Colors.white //"Sem solução"
   ];
 
-  Colaboracao(
-      {this.id,
-        this.ano,
-        this.numero,
-        this.idOrganograma,
-        this.idSolicitante,
-        this.idSolicitantesec,
-        this.idEquipamento,
-        this.idOperador,
-        this.descricao,
-        this.observacao,
-        this.dataAbertura,
-        this.dataFechamento,
-        this.prioridade,
-        this.atendimentoIni,
-        this.totalAtendimentos,
-        this.minStatus,
-        this.statusAtendimentos,
-        this.setorResponsavelSigla,
-        this.setorResponsavelNome,
-        this.siglaOrganograma,
-        this.nomeOrganograma,
-        this.nomeSolicitante,
-        this.cpfSolicitante,
-        this.historicoAtendimento,
-        this.idsAtendimento,
-        this.usuariosEnvolvidosAtendimento,
-        this.pessoasEnvolvidasHistorico,
-        this.idsUsuario,
-        this.idsSetorResponsavel,
-        this.latitude,
-        this.longitude,
-        this.bairro,
-        this.rua,
-        this.solicitacaoNumero});
-
-
   Colaboracao.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    ano = json['ano'];
-    numero = json['numero'];
-    idOrganograma = json['idOrganograma'];
-    idSolicitante = json['idSolicitante'];
-    idSolicitantesec = json['idSolicitantesec'];
-    idEquipamento = json['idEquipamento'];
-    idOperador = json['idOperador'];
-    descricao = json['descricao'];
-    observacao = json['observacao'];
-    dataAbertura = json['dataAbertura'];
-    dataFechamento = json['dataFechamento'];
-    prioridade = json['prioridade'];
-    atendimentoIni = json['atendimentoIni'];
-    totalAtendimentos = json['totalAtendimentos'];
-    minStatus = json['minStatus'];
-    statusAtendimentos = json['statusAtendimentos'];
-    setorResponsavelSigla = json['setorResponsavelSigla'];
-    setorResponsavelNome = json['setorResponsavelNome'];
-    siglaOrganograma = json['siglaOrganograma'];
-    nomeOrganograma = json['nomeOrganograma'];
-    nomeSolicitante = json['nomeSolicitante'];
-    cpfSolicitante = json['cpfSolicitante'];
-    historicoAtendimento = json['historicoAtendimento'];
-    idsAtendimento = json['idsAtendimento'];
-    usuariosEnvolvidosAtendimento = json['usuariosEnvolvidosAtendimento'];
-    pessoasEnvolvidasHistorico = json['pessoasEnvolvidasHistorico'];
-    idsUsuario = json['idsUsuario'];
-    idsSetorResponsavel = json['idsSetorResponsavel'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    bairro = json['bairro'];
-    rua = json['rua'];
-    solicitacaoNumero = json['solicitacao_numero'];
+    try {
+      if (json != null) {
+        id = json['id'];
+        latitude = json['latitude'];
+        longitude = json['longitude'];
+        bairro = json['bairro'];
+        rua = json['rua'];
+        numero = json['numero'];
+        ano = json['ano'];
+        solicitacao_numero = json['solicitacao_numero'];
+        descricao = json['descricao'];
+        observacao = json['observacao'];
+        dataAbertura = json['dataAbertura'];
+        dataFechamento = json['dataFechamento'];
+        atendimentoIni = json['atendimentoIni'];
+        totalAtendimentos = json['totalAtendimentos'];
+        minStatus = json['minStatus'];
+        servico_nome = json['servico_nome'];
+        servico_icone = json['servico_icone'];
+        servico_cor = json['servico_cor'];
+
+        if (json.containsKey('anexo')) {
+          anexo = Anexo.fromJson(json['anexo']);
+        }
+
+      }
+    } catch (e) {}
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['ano'] = this.ano;
-    data['numero'] = this.numero;
-    data['idOrganograma'] = this.idOrganograma;
-    data['idSolicitante'] = this.idSolicitante;
-    data['idSolicitantesec'] = this.idSolicitantesec;
-    data['idEquipamento'] = this.idEquipamento;
-    data['idOperador'] = this.idOperador;
-    data['descricao'] = this.descricao;
-    data['observacao'] = this.observacao;
-    data['dataAbertura'] = this.dataAbertura;
-    data['dataFechamento'] = this.dataFechamento;
-    data['prioridade'] = this.prioridade;
-    data['atendimentoIni'] = this.atendimentoIni;
-    data['totalAtendimentos'] = this.totalAtendimentos;
-    data['minStatus'] = this.minStatus;
-    data['statusAtendimentos'] = this.statusAtendimentos;
-    data['setorResponsavelSigla'] = this.setorResponsavelSigla;
-    data['setorResponsavelNome'] = this.setorResponsavelNome;
-    data['siglaOrganograma'] = this.siglaOrganograma;
-    data['nomeOrganograma'] = this.nomeOrganograma;
-    data['nomeSolicitante'] = this.nomeSolicitante;
-    data['cpfSolicitante'] = this.cpfSolicitante;
-    data['historicoAtendimento'] = this.historicoAtendimento;
-    data['idsAtendimento'] = this.idsAtendimento;
-    data['usuariosEnvolvidosAtendimento'] = this.usuariosEnvolvidosAtendimento;
-    data['pessoasEnvolvidasHistorico'] = this.pessoasEnvolvidasHistorico;
-    data['idsUsuario'] = this.idsUsuario;
-    data['idsSetorResponsavel'] = this.idsSetorResponsavel;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['bairro'] = this.bairro;
-    data['rua'] = this.rua;
-    data['solicitacao_numero'] = this.solicitacaoNumero;
-    return data;
+    final Map<String, dynamic> json = new Map<String, dynamic>();
+    json['id'] = this.id;
+    json['latitude'] = this.latitude;
+    json['longitude'] = this.longitude;
+    json['bairro'] = this.bairro;
+    json['rua'] = this.rua;
+    json['numero'] = this.numero;
+    json['ano'] = this.ano;
+    json['solicitacao_numero'] = this.solicitacao_numero;
+    json['descricao'] = this.descricao;
+    json['observacao'] = this.observacao;
+    json['dataAbertura'] = this.dataAbertura;
+    json['dataFechamento'] = this.dataFechamento;
+    json['atendimentoIni'] = this.atendimentoIni;
+    json['totalAtendimentos'] = this.totalAtendimentos;
+    json['minStatus'] = this.minStatus;
+    json['servico_nome'] = this.servico_nome;
+    json['servico_icone'] = this.servico_icone;
+    json['servico_cor'] = this.servico_cor;
+    json['anexo'] = this.anexo.toJson();
+    return json;
   }
-
-
-
 }

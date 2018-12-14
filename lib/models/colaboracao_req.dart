@@ -5,17 +5,20 @@ class ColaboracaoReq {
   int recordsTotal;
   int totalPages;
   int page;
+
   List<Colaboracao> data;
   String status;
 
   ColaboracaoReq(
-      {this.draw,
+      {
+        this.draw,
         this.recordsFiltered,
         this.recordsTotal,
         this.totalPages,
         this.page,
         this.data,
-        this.status});
+        this.status
+      });
 
   ColaboracaoReq.fromJson(Map<String, dynamic> json) {
     draw = json['draw'];

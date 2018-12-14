@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
 
   Future isInternet() async{
     var r = await ConnectionCheck.isInternet();
-    print(r);
     ConnectionCheck.asInternet = r;
   }
 

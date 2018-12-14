@@ -5,6 +5,7 @@ import 'package:colabore/views/main_page.dart';
 import 'package:colabore/views/sobre_view.dart';
 import 'package:colabore/views/colaborar_view.dart';
 import 'package:colabore/views/cadastro_view.dart';
+import 'package:colabore/views/detalhe_colaboracao.dart';
 /*
 final routes = {
   '/login': (BuildContext context) => new LoginView(),
@@ -25,4 +26,5 @@ final routes = <String, WidgetBuilder>{
   '/sobre': (context) => SobreView(),
   '/cadastro': (context) => CadastroView(),
   '/noInternet': (context) => NoInternetView(),
+  //'/detalheColaboracao': (context) => DetalheColaboracaoView(),
 };
