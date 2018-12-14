@@ -9,6 +9,24 @@ class ColaboracaoListItem extends StatelessWidget {
 
   ColaboracaoListItem({@required this.colaboracao});
 
+  _listItem(String label,String value){
+
+    return Container(
+      padding: EdgeInsets.fromLTRB(0, 5, 0, 3),
+      child: Row(children: <Widget>[
+        Text(
+          "$label:  ",
+          style: TextStyle(color: AppStyle.textMedium, fontSize: 14),
+        ),
+        Text(
+          value,
+          style: TextStyle(color: Colors.white, fontSize: 17),
+        )
+      ]
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final makeListTile = ListTile(
@@ -24,114 +42,18 @@ class ColaboracaoListItem extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            //mumero 1
-            Row(children: <Widget>[
-              Text(
-                "Nº:  ",
-                style: TextStyle(color: AppStyle.textMedium, fontSize: 12),
-              ),
-              Text(
-                colaboracao?.codigo,
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              )
-            ]),
-
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-            ),
-
-            Row(children: <Widget>[
-              Text(
-                "Serviço:  ",
-                style: TextStyle(color: AppStyle.textMedium, fontSize: 12),
-              ),
-              Text(
-                colaboracao?.servico_nome,
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              )
-            ]),
-
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-            ),
-
-            //linha 2
-            Row(children: <Widget>[
-              Text(
-                "Aberto:  ",
-                style: TextStyle(color: AppStyle.textMedium, fontSize: 12),
-              ),
-             /* Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 7, 0),
-                child: Icon(Icons.date_range,size: 20,),
-              ),*/
-
-              Text(
-                colaboracao?.abertoEm,
-                style: TextStyle(color: AppStyle.textLight, fontSize: 14),
-              )
-            ]),
-
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-            ),
-            //rua
-            Row(children: <Widget>[
-              Text(
-                "Rua:  ",
-                style: TextStyle(color: AppStyle.textMedium, fontSize: 12),
-              ),
-              Text(
-                colaboracao?.rua,
-                style: TextStyle(color: AppStyle.textLight, fontSize: 14),
-              )
-            ]),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-            ),
-
-            Row(children: <Widget>[
-              Text(
-                "Bairro:  ",
-                style: TextStyle(color: AppStyle.textMedium, fontSize: 12),
-              ),
-              Text(
-                colaboracao?.bairro,
-                style: TextStyle(color: AppStyle.textLight, fontSize: 14),
-              )
-            ]),
 
 
-
+            _listItem("Nº",colaboracao.codigo),
+            _listItem("Serviço",colaboracao.getNomeServico),
+            _listItem("Aberto",colaboracao.abertoEm),
+            //_listItem("Rua",colaboracao.rua),
+            //_listItem("Bairro",colaboracao.bairro),
+           // _listItem("Fechado",colaboracao.fechadoEm),
 
           ],
         ),
-        subtitle: Container(
-            padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "Descrição:  ",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(color: AppStyle.textMedium, fontSize: 12),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                ),
-                Row(children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      colaboracao.descricao,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(color: AppStyle.textLight),
-                    ),
-                  ),
-                ]),
-              ],
-            )
-        ),
+
         /*trailing: Icon(Icons.keyboard_arrow_right,
             color: AppStyle.textLight, size: 30.0)*/
     );
@@ -165,6 +87,7 @@ class ColaboracaoListItem extends StatelessWidget {
                     ),
                   ),
 
+
                   Text(
                     colaboracao.statusFinal,
                     style: TextStyle(
@@ -186,13 +109,15 @@ class ColaboracaoListItem extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => DetalheColaboracaoView(colaboracao:colaboracao)
+              builder: (context) => DetalheColaboracaoView(colaboracao: colaboracao)
           ),
         );
 
       },
       child: makeCard,
     );
+
+    //return  ListTile(title: Container());
 
   }
 }

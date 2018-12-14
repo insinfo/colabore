@@ -112,7 +112,7 @@ class DetalheColaboracaoViewState extends State<DetalheColaboracaoView> {
           ),
 
           _listItem("Nº",colaboracao.codigo),
-          _listItem("Serviço",colaboracao.servico_nome),
+          _listItem("Serviço",colaboracao.getNomeServico),
           _listItem("Aberto",colaboracao.abertoEm),
           _listItem("Rua",colaboracao.rua),
           _listItem("Bairro",colaboracao.bairro),

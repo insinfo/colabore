@@ -24,7 +24,12 @@ class Colaboracao {
   Anexo anexo;
 
   String get codigo {
-    return this.ano.toString() + this.solicitacao_numero.toString();
+    try {
+      return this.ano.toString() + this.solicitacao_numero.toString();
+    }catch(e){
+      return " ";
+    }
+
   }
 
   double get getLatitude {
@@ -36,7 +41,11 @@ class Colaboracao {
   }
 
   String get statusFinal {
-    return listStatus[this.minStatus];
+    try {
+      return listStatus[this.minStatus];
+    }catch(e){
+      return "Aberto";
+    }
   }
 
   String get imageUrl{
@@ -58,17 +67,33 @@ class Colaboracao {
     return "";
   }
 
+  String get getNomeServico {
+    if (servico_nome != null) {
+      return servico_nome;
+    }
+    return " ";
+  }
+
   String get fechadoEm {
+    try {
     if (dataFechamento != null) {
       var parsedDate = DateTime.parse(dataFechamento);
       var formatter = new DateFormat('dd/MM/yyyy');
       return formatter.format(parsedDate);
     }
     return "-----";
+    }catch(e){
+      return "-----";
+    }
   }
 
   MaterialColor get statusFinalColor {
-    return listStatusColor[this.minStatus];
+    try {
+      return listStatusColor[this.minStatus];
+    }catch(e){
+      return listStatusColor[0];
+    }
+
   }
 
   final listStatus = [
