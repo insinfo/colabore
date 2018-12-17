@@ -70,8 +70,12 @@ class RecuperaAcessoViewState extends State<RecuperaAcessoView> {
     );
 
     return Scaffold(
-        appBar: null,
-        backgroundColor: Color(0xFF3b4455), //#3b4455
+        appBar: new AppBar(
+          title: new Text("Recupera Acesso"),
+          backgroundColor: AppStyle.backgroundDark,
+          elevation: 0,
+        ),
+        backgroundColor: AppStyle.backgroundDark,
         body: SingleChildScrollView(
             child: Form(
           child: Column(
