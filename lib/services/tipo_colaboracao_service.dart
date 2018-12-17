@@ -57,7 +57,7 @@ class ColaboracaoService {
   }
 
   /// lista todos os serviços / tipo de solicitação
-  Future<List<Colaboracao>> getColaboracoes({offset=0,limit=3,page=0}) async {
+  Future<List<Colaboracao>> getColaboracoes({offset=0,limit=50,page=0}) async {
     try {
       var limite = limit;
       var inicio = offset;
