@@ -82,7 +82,7 @@ class DetalheColaboracaoViewState extends State<DetalheColaboracaoView> {
           ),
           Text(
             value,
-            style: TextStyle(color: Colors.white, fontSize: 17),
+            style: TextStyle(color: Colors.white, fontSize: 16),
           )
         ]
       ),
@@ -107,16 +107,18 @@ class DetalheColaboracaoViewState extends State<DetalheColaboracaoView> {
           Container(
             padding: EdgeInsets.fromLTRB(70, 16, 70, 16),
             color: Colors.white12,
-            child: colaboracao.imageUrl != null ?
-              Image.network(colaboracao.imageUrl,height: 180,) : Container()
+            child: colaboracao.getImageURL != null ?
+              Image.network(colaboracao.getImageURL,height: 180,) : Container()
           ),
 
-          _listItem("Nº",colaboracao.codigo),
+          _listItem("Nº",colaboracao.getNumeroSolicitacao),
           _listItem("Serviço",colaboracao.getNomeServico),
-          _listItem("Aberto",colaboracao.abertoEm),
-          _listItem("Rua",colaboracao.rua),
-          _listItem("Bairro",colaboracao.bairro),
-          _listItem("Fechado",colaboracao.fechadoEm),
+          _listItem("Status",colaboracao.getStatusAsString),
+          _listItem("Aberto",colaboracao.getDataAbertura),
+          _listItem("Rua",colaboracao.getRua),
+          _listItem("Bairro",colaboracao.getBairro),
+          _listItem("Fechado",colaboracao.getDataFechamento),
+
 
           Container(
               padding: EdgeInsets.fromLTRB(0, 7, 0, 5),
@@ -134,7 +136,7 @@ class DetalheColaboracaoViewState extends State<DetalheColaboracaoView> {
                   Row(children: <Widget>[
                     Expanded(
                       child: Text(
-                        colaboracao.descricao,
+                        colaboracao.getDescricao,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 20,
                         style: TextStyle(color: AppStyle.textLight,fontSize: 17),
@@ -144,7 +146,6 @@ class DetalheColaboracaoViewState extends State<DetalheColaboracaoView> {
                 ],
               )
           ),
-
 
 
           //mapa

@@ -6,6 +6,8 @@ import 'package:colabore/views/sobre_view.dart';
 import 'package:colabore/views/colaborar_view.dart';
 import 'package:colabore/views/cadastro_view.dart';
 import 'package:colabore/views/detalhe_colaboracao.dart';
+import 'package:colabore/views/politica_view.dart';
+import 'package:colabore/views/recupera_acesso_view.dart';
 /*
 final routes = {
   '/login': (BuildContext context) => new LoginView(),
@@ -26,5 +28,7 @@ final routes = <String, WidgetBuilder>{
   '/sobre': (context) => SobreView(),
   '/cadastro': (context) => CadastroView(),
   '/noInternet': (context) => NoInternetView(),
+  '/politica': (context) => PoliticaView(),
+  '/recuperarAcesso': (context) => RecuperaAcessoView(),
   //'/detalheColaboracao': (context) => DetalheColaboracaoView(),
 };

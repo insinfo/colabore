@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:colabore/models/usuario.dart';
 import 'package:colabore/app_settings.dart';
+import 'package:colabore/app_strings.dart';
 
 class AuthService {
   String message = "";
@@ -16,24 +17,24 @@ class AuthService {
           headers: header, body: loginData);
 
       if (response.statusCode == 200) {
-        message = "Sucesso";
+        message = AppStrings.sucesso;
         var user = Usuario.fromJson(json.decode(response.body));
         AppSettings.user = user;
         AppSettings.token = user.accessToken;
         return user;
       } else if (response.statusCode == 401) {
-        message = "Credencial Inválida";
+        message = AppStrings.credencialInvalida;
         return null;
       } else if (response.statusCode == 400) {
-        message = "Erro no servidor, tente mais tarde.";
+        message = AppStrings.erroComunicarServidor;
         return null;
       } else {
-        message = "Erro no servidor ou você pode estar sem internet.";
+        message = AppStrings.erroComunicarServidor;
         return null;
       }
     } catch (e) {
-      message = "Erro de internet";
-      print(e.toString());
+      message = AppStrings.erroComunicarServidor;
+      print("doLogin "+e.toString());
       return null;
     }
   }

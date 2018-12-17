@@ -34,32 +34,30 @@ class ColaboracaoService {
       var response =
           await http.get(AppSettings.rotaTipoColaboracoes, headers: header);
 
-
-
       if (response.statusCode == 200) {
         message = AppStrings.sucesso;
-        var tipoColRer = TipoColaboracaoReq.fromJson(json.decode(response.body));
-        var data = tipoColRer.data;
-        return data;
+        var tipoColaboracaoResponse = TipoColaboracaoReq.fromJson(json.decode(response.body));
+        return tipoColaboracaoResponse.listTipoColaboracao;
+
       } else if (response.statusCode == 401) {
         message = AppStrings.credencialInvalida;
         return null;
       } else if (response.statusCode == 400) {
-        message = AppStrings.falhaAoObterDados;
+        message = AppStrings.erroComunicarServidor;
         return null;
       } else {
-        message = AppStrings.falhaAoObterDados;
+        message = AppStrings.erroComunicarServidor;
         return null;
       }
     } catch (e) {
-      message = AppStrings.falhaAoObterDados;
-      print(e.toString());
+      message = AppStrings.erroComunicarServidor;
+      print("getTiposColaboracao "+e.toString());
       return null;
     }
   }
 
   /// lista todos os serviços / tipo de solicitação
-  Future<List<Colaboracao>> getColaboracoes({offset=0,limit=50,page=0}) async {
+  Future<List<Colaboracao>> getColaboracoes({offset=0,limit=3,page=0}) async {
     try {
       var limite = limit;
       var inicio = offset;
@@ -70,24 +68,24 @@ class ColaboracaoService {
 
       if (response.statusCode == 200) {
         message = AppStrings.sucesso;
-        var tipoColRer = ColaboracaoReq.fromJson(json.decode(response.body));
-        var data = tipoColRer.data;
-        return data;
+
+        var colaboracaoResponse = ColaboracaoReq.fromJson(json.decode(response.body));
+        return colaboracaoResponse.listColaboracao;
+
       } else if (response.statusCode == 401) {
         message = AppStrings.credencialInvalida;
         return null;
       } else if (response.statusCode == 400) {
-        message = AppStrings.falhaAoObterDados;
+        message = AppStrings.erroComunicarServidor;
         return null;
       } else {
-        message = AppStrings.falhaAoObterDados;
+        message = AppStrings.erroComunicarServidor;
         return null;
       }
     } catch (e) {
 
       print("erro ao obter dados ");
-      message = AppStrings.falhaAoObterDados;
-      print(e.hashCode);
+      message = AppStrings.erroComunicarServidor;
       print(e.toString());
       return null;
     }
@@ -134,14 +132,14 @@ class ColaboracaoService {
         message = AppStrings.credencialInvalida;
         return false;
       } else if (response.statusCode == 400) {
-        message = AppStrings.falhaAoObterDados;
+        message = AppStrings.erroComunicarServidor;
         return false;
       } else {
-        message = AppStrings.falhaAoObterDados;
+        message = AppStrings.erroComunicarServidor;
         return false;
       }
     } catch (e) {
-      message = AppStrings.falhaAoObterDados;
+      message = AppStrings.erroComunicarServidor;
       print(e.toString());
       return false;
     }
@@ -173,14 +171,14 @@ class ColaboracaoService {
         message = AppStrings.usuarioJaExiste;
         return null;
       } else if (response.statusCode == 400) {
-        message = AppStrings.falhaAoObterDados;
+        message = AppStrings.erroComunicarServidor;
         return null;
       } else {
-        message = AppStrings.falhaAoObterDados;
+        message = AppStrings.erroComunicarServidor;
         return null;
       }
     } catch (e) {
-      message = AppStrings.falhaAoObterDados;
+      message = AppStrings.erroComunicarServidor;
       print(e.toString());
       return null;
     }

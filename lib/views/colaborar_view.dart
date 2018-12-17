@@ -38,10 +38,12 @@ class ColaborarViewState extends State<ColaborarView> {
   List<String> _bairros = <String>["Centro", "Ancora"];
   ColaboracaoService apiRest = new ColaboracaoService();
 
+  MapController _mapController = new MapController();
   Map<String, double> _startLocation;
   Map<String, double> _currentLocation;
   double latitude = -22.5272718;
   double longitude = -41.95030867;
+  LatLng latLng = LatLng(-22.5272718,-41.95030867);
 
   StreamSubscription<Map<String, double>> _locationSubscription;
   Location _location = new Location();
@@ -52,17 +54,8 @@ class ColaborarViewState extends State<ColaborarView> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-
-  }
-
-  _onLocationChange(Map<String, double> location) {
-      _currentLocation = location;
-      setState(() {
-        print("onLocationChanged");
-        latitude = location["latitude"] != null ? location["latitude"] : -22.5272718;
-        longitude = location["longitude"] != null ? location["longitude"] : -41.95030867;
-      });
+    initBairros();
+    initLocationService();
   }
 
   @override
@@ -71,37 +64,55 @@ class ColaborarViewState extends State<ColaborarView> {
     _locationSubscription.cancel();
   }
 
-  initPlatformState() async {
+  initBairros() async{
+    var bairros = await apiRest.getBairros();
+    setState(() {
+      _bairros = bairros;
+    });
+  }
+
+  _onLocationChange(Map<String, double> location) {
+    _currentLocation = location;
+    setState(() {
+      latitude = location["latitude"] != null ? location["latitude"] : -22.5272718;
+      longitude = location["longitude"] != null ? location["longitude"] : -41.95030867;
+      latLng = LatLng(latitude,longitude);
+      _mapController.move(latLng, 18);
+    });
+  }
+
+  initLocationService() async {
     Map<String, double> location;
 
     try {
 
-      var bairros = await apiRest.getBairros();
-      setState(() {
-        _bairros = bairros;
-      });
-
       _isLocationPermission = await _location.hasPermission();
       location = await _location.getLocation();
-      setState(() {});
       _locationSubscription = _location.onLocationChanged().listen(_onLocationChange);
       _currentLocation = await _location.getLocation();
       setState(() {
         _startLocation = location;
         latitude = _currentLocation != null ? _currentLocation["latitude"] : -22.5272718;
         longitude = _currentLocation !=null ? _currentLocation["longitude"] : -41.95030867;
+        latLng = LatLng(latitude,longitude);
+        _mapController.move(latLng, 18);
       });
 
       error = null;
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e)
+    {
       if (e.code == 'PERMISSION_DENIED') {
         error = 'Permission denied';
       } else if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
         error =
             'Permission denied - please ask the user to enable it from the app settings';
       }
-      print(e.message);
+      print("initLocationService "+e.message);
       location = null;
+    }
+    catch(ex)
+    {
+      print("initLocationService "+ex.message);
     }
   }
 
@@ -198,10 +209,10 @@ class ColaborarViewState extends State<ColaborarView> {
       colaborar.imagem = imageDataURL;*/
       colaborar.imagemPath = _imageFile.path;
 
-      colaborar.idServico = tipoColaboracao.id;
+      colaborar.idServico = tipoColaboracao.getId;
       colaborar.idOperador = AppSettings.user.idPessoa;
       colaborar.idSolicitante = AppSettings.user.idPessoa;
-      colaborar.idSetor = tipoColaboracao.idSetor;
+      colaborar.idSetor = tipoColaboracao.getIdSetor;
       await apiRest.postNewColaboracao(colaborar);
 
       setState(() {
@@ -215,19 +226,18 @@ class ColaborarViewState extends State<ColaborarView> {
     return true;
   }
 
-  Widget _buildMap(BuildContext context) {
-
-    var pos = new LatLng(latitude,longitude);
+  _buildMap(BuildContext context) {
 
     return new FlutterMap(
       options: new MapOptions(
-        center: pos,
+        center: latLng,
         zoom: 18,
       ),
+      mapController: _mapController ,
       layers: [
 
         new TileLayerOptions(
-          /*urlTemplate: "https://api.tiles.mapbox.com/v4/""{id}/{z}/{x}/{y}@2x.png?access_token=${AppSettings.mapboxAccessToken}",
+         /* urlTemplate: "https://api.tiles.mapbox.com/v4/""{id}/{z}/{x}/{y}@2x.png?access_token=${AppSettings.mapboxAccessToken}",
           additionalOptions: {
             'accessToken': '<${AppSettings.mapboxAccessToken}>',
             'id': 'mapbox.streets',
@@ -240,7 +250,7 @@ class ColaborarViewState extends State<ColaborarView> {
             new Marker(
               width: 80.0,
               height: 80.0,
-              point: pos,
+              point: latLng,
               builder: (ctx) =>
               new Container(
                 child: Icon(Icons.location_on,color: Colors.red,size: 40,),

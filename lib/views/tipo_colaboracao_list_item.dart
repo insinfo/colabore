@@ -18,12 +18,10 @@ class TipoColaboracaoListItem extends StatelessWidget {
           decoration: new BoxDecoration(
               border: new Border(
                   right: new BorderSide(width: 1.0, color: Colors.white24))),
-          child: tipoColaboracao.icone != null
-              ? Icon(IconsMap[tipoColaboracao.icone], color: Colors.white)
-              : Icon(Icons.check, color: Colors.white),
+          child:Icon(tipoColaboracao.getIcon, color: Colors.white)
         ),
         title: Text(
-          tipoColaboracao?.nome,
+          tipoColaboracao?.getNome,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         subtitle: Row(

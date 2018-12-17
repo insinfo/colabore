@@ -41,6 +41,14 @@ class MenuPrincipal extends StatelessWidget {
               },
             ),
             ListTile(
+              leading: Icon(Icons.comment,color: AppStyle.menuIcon,),
+              title: Text('Política e Termos',style: TextStyle(color: AppStyle.textLight),),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).pushNamed("/politica");
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.exit_to_app,color: AppStyle.menuIcon,),
               title: Text('Sair',style: TextStyle(color: AppStyle.textLight),),
               onTap: () {

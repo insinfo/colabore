@@ -3,64 +3,128 @@ import 'package:intl/intl.dart';
 import 'package:colabore/models/anexo.dart';
 import 'package:colabore/app_settings.dart';
 class Colaboracao {
-  int id;
-  String latitude;
-  String longitude;
-  String bairro;
-  String rua;
-  String numero;
-  int ano;
-  String solicitacao_numero;
-  String descricao;
-  String observacao;
-  String dataAbertura;
-  String dataFechamento;
-  int atendimentoIni;
-  int totalAtendimentos;
-  int minStatus;
-  String servico_nome;
-  String servico_icone;
-  String servico_cor;
-  Anexo anexo;
+  int _id;
+  String _latitude;
+  String _longitude;
+  String _bairro;
+  String _rua;
+  String _numero;
+  int _ano;
+  String _solicitacaoNumero;
+  String _descricao;
+  String _observacao;
+  String _dataAbertura;
+  String _dataFechamento;
+  int _atendimentoIni;
+  int _totalAtendimentos;
+  int _minStatus;
+  String _servicoNome;
+  String _servicoIcone;
+  String _servicoCor;
+  Anexo _anexo;
 
-  String get codigo {
+  String get getServicoIcone {
     try {
-      return this.ano.toString() + this.solicitacao_numero.toString();
+      if(this._servicoIcone == null){
+        return " - ";
+      }
+      return this._servicoIcone;
     }catch(e){
-      return " ";
+      return " - ";
+    }
+  }
+
+  String get getNumero {
+    try {
+      if(this._numero == null){
+        return " - ";
+      }
+      return this._numero;
+    }catch(e){
+      return " - ";
+    }
+  }
+
+  String get getDescricao {
+    try {
+      if(this._descricao == null){
+        return " - ";
+      }
+      return this._descricao;
+    }catch(e){
+      return " - ";
+    }
+  }
+
+  String get getRua {
+    try {
+      if(this._rua == null){
+        return " - ";
+      }
+      return this._rua;
+    }catch(e){
+      return " - ";
+    }
+  }
+
+  String get getBairro {
+    try {
+      if(this._bairro == null){
+        return " - ";
+      }
+      return this._bairro;
+    }catch(e){
+      return " - ";
+    }
+  }
+
+  String get getNumeroSolicitacao {
+    try {
+      if(this._ano == null){
+        return " - ";
+      }
+      return this._ano.toString() + this._solicitacaoNumero.toString();
+    }catch(e){
+      return " - ";
     }
 
   }
 
   double get getLatitude {
-    return double.parse(latitude);
+    if(_latitude == null){
+      return -22.5272718;
+    }
+    return double.parse(_latitude);
   }
 
   double get getLongitude {
-    return double.parse(longitude);
+    if(_longitude == null){
+      return -41.95030867;
+    }
+    return double.parse(_longitude);
   }
 
-  String get statusFinal {
+  String get getStatusAsString {
     try {
-      return listStatus[this.minStatus];
+      return listStatus[this._minStatus];
     }catch(e){
-      return "Aberto";
+      return " - ";
     }
   }
 
-  String get imageUrl{
+  String get getImageURL{
 
-    if(anexo != null){
-      if(anexo.url != null){
-        return AppSettings.webServiceBaseURL + anexo.url;
+    if(_anexo != null){
+      if(_anexo.url != null){
+        return AppSettings.webServiceBaseURL + _anexo.url;
       }
     }
     return null;
   }
 
-  String get abertoEm {
-    if (dataAbertura != null) {
-      var parsedDate = DateTime.parse(dataAbertura);
+  String get getDataAbertura {
+    if (_dataAbertura != null) {
+      var parsedDate = DateTime.parse(_dataAbertura);
       var formatter = new DateFormat('dd/MM/yyyy');
       return formatter.format(parsedDate);
     }
@@ -68,16 +132,16 @@ class Colaboracao {
   }
 
   String get getNomeServico {
-    if (servico_nome != null) {
-      return servico_nome;
+    if (_servicoNome != null) {
+      return _servicoNome;
     }
-    return " ";
+    return " - ";
   }
 
-  String get fechadoEm {
+  String get getDataFechamento {
     try {
-    if (dataFechamento != null) {
-      var parsedDate = DateTime.parse(dataFechamento);
+    if (_dataFechamento != null) {
+      var parsedDate = DateTime.parse(_dataFechamento);
       var formatter = new DateFormat('dd/MM/yyyy');
       return formatter.format(parsedDate);
     }
@@ -87,9 +151,9 @@ class Colaboracao {
     }
   }
 
-  MaterialColor get statusFinalColor {
+  MaterialColor get getStatusColor {
     try {
-      return listStatusColor[this.minStatus];
+      return listStatusColor[this._minStatus];
     }catch(e){
       return listStatusColor[0];
     }
@@ -119,54 +183,54 @@ class Colaboracao {
   Colaboracao.fromJson(Map<String, dynamic> json) {
     try {
       if (json != null) {
-        id = json['id'];
-        latitude = json['latitude'];
-        longitude = json['longitude'];
-        bairro = json['bairro'];
-        rua = json['rua'];
-        numero = json['numero'];
-        ano = json['ano'];
-        solicitacao_numero = json['solicitacao_numero'];
-        descricao = json['descricao'];
-        observacao = json['observacao'];
-        dataAbertura = json['dataAbertura'];
-        dataFechamento = json['dataFechamento'];
-        atendimentoIni = json['atendimentoIni'];
-        totalAtendimentos = json['totalAtendimentos'];
-        minStatus = json['minStatus'];
-        servico_nome = json['servico_nome'];
-        servico_icone = json['servico_icone'];
-        servico_cor = json['servico_cor'];
+        _id = json.containsKey('id') ? json['id'] : null;
+        _latitude = json.containsKey('latitude') ? json['latitude'] : null;
+        _longitude = json.containsKey('longitude') ? json['longitude'] : null;
+        _bairro = json.containsKey('bairro') ? json['bairro'] : null;
+        _rua = json.containsKey('rua') ? json['rua'] : null;
+        _numero = json.containsKey('numero') ? json['numero'] : null;
+        _ano = json.containsKey('ano') ? json['ano'] : null;
+        _solicitacaoNumero = json.containsKey('solicitacao_numero') ? json['solicitacao_numero'] : null;
+        _descricao = json.containsKey('descricao') ? json['descricao'] : null;
+        _observacao = json.containsKey('observacao') ? json['observacao'] : null;
+        _dataAbertura = json.containsKey('dataAbertura') ? json['dataAbertura'] : null;
+        _dataFechamento = json.containsKey('dataFechamento') ? json['dataFechamento'] : null;
+        _atendimentoIni = json.containsKey('atendimentoIni') ? json['atendimentoIni'] : null;
+        _totalAtendimentos = json.containsKey('totalAtendimentos') ? json['totalAtendimentos'] : null;
+        _minStatus = json.containsKey('minStatus') ? json['minStatus'] : null;
+        _servicoNome = json.containsKey('servico_nome') ? json['servico_nome'] : null;
+        _servicoIcone = json.containsKey('servico_icone') ? json['servico_icone'] : null;
+        _servicoCor = json.containsKey('servico_cor') ? json['servico_cor'] : null;
 
         if (json.containsKey('anexo')) {
-          anexo = Anexo.fromJson(json['anexo']);
+          _anexo = Anexo.fromJson(json['anexo']);
         }
 
       }
-    } catch (e) {}
+    } catch (e) {print("Colaboracao.fromJson");}
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = new Map<String, dynamic>();
-    json['id'] = this.id;
-    json['latitude'] = this.latitude;
-    json['longitude'] = this.longitude;
-    json['bairro'] = this.bairro;
-    json['rua'] = this.rua;
-    json['numero'] = this.numero;
-    json['ano'] = this.ano;
-    json['solicitacao_numero'] = this.solicitacao_numero;
-    json['descricao'] = this.descricao;
-    json['observacao'] = this.observacao;
-    json['dataAbertura'] = this.dataAbertura;
-    json['dataFechamento'] = this.dataFechamento;
-    json['atendimentoIni'] = this.atendimentoIni;
-    json['totalAtendimentos'] = this.totalAtendimentos;
-    json['minStatus'] = this.minStatus;
-    json['servico_nome'] = this.servico_nome;
-    json['servico_icone'] = this.servico_icone;
-    json['servico_cor'] = this.servico_cor;
-    json['anexo'] = this.anexo.toJson();
+    json['id'] = this._id;
+    json['latitude'] = this._latitude;
+    json['longitude'] = this._longitude;
+    json['bairro'] = this._bairro;
+    json['rua'] = this._rua;
+    json['numero'] = this._numero;
+    json['ano'] = this._ano;
+    json['solicitacao_numero'] = this._solicitacaoNumero;
+    json['descricao'] = this._descricao;
+    json['observacao'] = this._observacao;
+    json['dataAbertura'] = this._dataAbertura;
+    json['dataFechamento'] = this._dataFechamento;
+    json['atendimentoIni'] = this._atendimentoIni;
+    json['totalAtendimentos'] = this._totalAtendimentos;
+    json['minStatus'] = this._minStatus;
+    json['servico_nome'] = this._servicoNome;
+    json['servico_icone'] = this._servicoIcone;
+    json['servico_cor'] = this._servicoCor;
+    json['anexo'] = this._anexo.toJson();
     return json;
   }
 }

@@ -16,11 +16,11 @@ class ColaboracaoListItem extends StatelessWidget {
       child: Row(children: <Widget>[
         Text(
           "$label:  ",
-          style: TextStyle(color: AppStyle.textMedium, fontSize: 14),
+          style: TextStyle(color: AppStyle.textMedium, fontSize: 12),
         ),
         Text(
           value,
-          style: TextStyle(color: Colors.white, fontSize: 17),
+          style: TextStyle(color: Colors.white, fontSize: 13),
         )
       ]
       ),
@@ -44,11 +44,11 @@ class ColaboracaoListItem extends StatelessWidget {
           children: <Widget>[
 
 
-            _listItem("Nº",colaboracao.codigo),
+            _listItem("Nº",colaboracao.getNumeroSolicitacao),
             _listItem("Serviço",colaboracao.getNomeServico),
-            _listItem("Aberto",colaboracao.abertoEm),
-            //_listItem("Rua",colaboracao.rua),
-            //_listItem("Bairro",colaboracao.bairro),
+            _listItem("Aberto",colaboracao.getDataAbertura),
+            _listItem("Rua",colaboracao.getRua),
+            _listItem("Bairro",colaboracao.getBairro),
            // _listItem("Fechado",colaboracao.fechadoEm),
 
           ],
@@ -61,7 +61,7 @@ class ColaboracaoListItem extends StatelessWidget {
     final makeCard = Card(
       elevation: 4.0,
       margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-      shape: Border(left: BorderSide(width: 2.0, color: colaboracao.statusFinalColor)),
+      shape: Border(left: BorderSide(width: 2.0, color: colaboracao.getStatusColor)),
       child: Container(
           decoration: BoxDecoration(color: AppStyle.backgroundCard),
           child: Column(
@@ -73,9 +73,9 @@ class ColaboracaoListItem extends StatelessWidget {
                 width: double.maxFinite,height: 30,
                 padding: EdgeInsets.fromLTRB(10, 5, 10, 3),
                 color: Color.fromRGBO(
-                    colaboracao.statusFinalColor.red,
-                    colaboracao.statusFinalColor.green,
-                    colaboracao.statusFinalColor.blue, .1),
+                    colaboracao.getStatusColor.red,
+                    colaboracao.getStatusColor.green,
+                    colaboracao.getStatusColor.blue, .1),
                 child: Row(children: <Widget>[
 
                   Text(
@@ -89,7 +89,7 @@ class ColaboracaoListItem extends StatelessWidget {
 
 
                   Text(
-                    colaboracao.statusFinal,
+                    colaboracao.getStatusAsString,
                     style: TextStyle(
                     color: AppStyle.textLight,
                     fontSize: 13,

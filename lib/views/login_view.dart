@@ -273,7 +273,9 @@ class LoginViewState extends State<LoginView> {
                                       'Esqueceu sua senha?',
                                       style: TextStyle(color: Colors.white),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context).pushNamed('/recuperarAcesso');
+                                    },
                                   )
                               ),
                             )

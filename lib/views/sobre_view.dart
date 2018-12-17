@@ -115,7 +115,7 @@ class SobreViewState extends State<SobreView> {
             _header(context),
             _buildTextBlock("Desenvolvido pela COTINF",
                 fontWeight: FontWeight.bold,fontSize: 14),
-            _buildTextBlock("Coordenadoria de Tecnologia de Informação\r\nPrefeitura de Rio das Ostras",
+            _buildTextBlock("Coordenadoria de Tecnologia da Informação\r\nPrefeitura de Rio das Ostras",
                 fontWeight: FontWeight.normal,fontSize: 12),
             _buildTextBlock("Coordenador",
                 fontWeight: FontWeight.bold,fontSize: 14),
@@ -124,17 +124,37 @@ class SobreViewState extends State<SobreView> {
             _buildTextBlock("Equipe de Desenvolvimento",
                 fontWeight: FontWeight.bold,fontSize: 14),
             _buildTextBlock(
-                    "Leonardo Calheiros Oliveira\r\n" +
-                    "Gabriel Bruno de Oliveira Mendonça\r\n" +
-                    "Isaque Neves Sant'Ana\r\n" +
-                    "José Amaro da Costa Neto\r\n" +
-                    "Cintia Maria Pimentel Hermida dos Santos\r\n",
+                "Leonardo Calheiros Oliveira\r\n" +
+                "Gabriel Bruno de Oliveira Mendonça\r\n" +
+                "Isaque Neves Sant'Ana\r\n" +
+                "José Amaro da Costa Neto\r\n" +
+                "Cintia Maria Pimentel Hermida dos Santos\r\n"+
+                "Marcos Machado de Queiros\r\n",
                 fontWeight: FontWeight.normal,fontSize: 12),
 
             _buildTextBlock("Projeto Piloto/Colaborador",
                 fontWeight: FontWeight.bold,fontSize: 14),
-            _buildTextBlock("Eduardo de Souza Bernardino da Silva\r\nEduardo Medeiros Delgado Rimes",
+            _buildTextBlock(
+                "Eduardo de Souza Bernardino da Silva\r\n"+
+                "Eduardo Medeiros Delgado Rimes",
                 fontWeight: FontWeight.normal,fontSize: 12),
+
+            _buildTextBlock("Segurança e Infraestrutura de Ti",
+                fontWeight: FontWeight.bold,fontSize: 14),
+            _buildTextBlock(
+                "Vinicius Ferro Araujo\r\n"
+              +"Stefan Augusto Beloti Pizetta\r\n"
+              +"Eduardo de Souza Bernardino da Silva\r\n"
+                ,
+                fontWeight: FontWeight.normal,fontSize: 12),
+
+            _buildTextBlock("Política de Privacidade & Termos",
+                fontWeight: FontWeight.bold,fontSize: 14),
+            _buildTextBlock(
+                "Adalberto Pires de Oliveira\r\n"
+                ,
+                fontWeight: FontWeight.normal,fontSize: 12),
+
 
             _buildTextBlock("Se chama Jubarte por quê?",
                 fontWeight: FontWeight.bold,fontSize: 14),

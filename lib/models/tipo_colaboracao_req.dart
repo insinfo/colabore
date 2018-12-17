@@ -1,45 +1,63 @@
 import 'package:colabore/models/tipo_colaboracao.dart';
 
 class TipoColaboracaoReq {
-  int draw;
-  int recordsFiltered;
-  int recordsTotal;
-  int totalPages;
-  int page;
-  List<TipoColaboracao> data;
+  int _draw;
+  int _recordsFiltered;
+  int _recordsTotal;
+  int _totalPages;
+  int _page;
 
-  TipoColaboracaoReq(
-      {this.draw,
-      this.recordsFiltered,
-      this.recordsTotal,
-      this.totalPages,
-      this.page,
-      this.data});
+  List<TipoColaboracao> _listTipoColaboracao;
+  String _status;
+
+  List<TipoColaboracao> get listTipoColaboracao {
+    return _listTipoColaboracao;
+  }
+
+  set listTipoColaboracao(List<TipoColaboracao> val) {
+    _listTipoColaboracao = val;
+  }
 
   TipoColaboracaoReq.fromJson(Map<String, dynamic> json) {
-    draw = json['draw'];
-    recordsFiltered = json['recordsFiltered'];
-    recordsTotal = json['recordsTotal'];
-    totalPages = json['totalPages'];
-    page = json['page'];
-    if (json['data'] != null) {
-      data = new List<TipoColaboracao>();
-      json['data'].forEach((v) {
-        data.add(new TipoColaboracao.fromJson(v));
-      });
+
+    try {
+
+      if(json != null) {
+
+        _draw = json.containsKey('draw') ? json['draw'] : null;
+        _recordsFiltered = json.containsKey('recordsFiltered') ? json['recordsFiltered'] : null;
+        _recordsTotal = json.containsKey('recordsTotal') ? json['recordsTotal'] : null;
+        _totalPages = json.containsKey('totalPages') ? json['totalPages'] : null;
+        _page = json.containsKey('page') ? json['page'] : null;
+        _status = json.containsKey('status') ? json['status'] : null;
+        var data = json.containsKey('data') ? json['data'] : null;
+
+        if (data != null) {
+          _listTipoColaboracao = new List<TipoColaboracao>();
+
+          json['data'].forEach((v) {
+            _listTipoColaboracao.add(new TipoColaboracao.fromJson(v));
+
+          });
+        }
+      }
+
+    } catch (e) {
+      print("TipoColaboracaoReq.fromJson " + e.toString());
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['draw'] = this.draw;
-    data['recordsFiltered'] = this.recordsFiltered;
-    data['recordsTotal'] = this.recordsTotal;
-    data['totalPages'] = this.totalPages;
-    data['page'] = this.page;
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+    data['draw'] = this._draw;
+    data['recordsFiltered'] = this._recordsFiltered;
+    data['recordsTotal'] = this._recordsTotal;
+    data['totalPages'] = this._totalPages;
+    data['page'] = this._page;
+    if (this._listTipoColaboracao != null) {
+      data['data'] = this._listTipoColaboracao.map((v) => v.toJson()).toList();
     }
+    data['status'] = this._status;
     return data;
   }
 }
