@@ -16,6 +16,7 @@ import 'package:colabore/utils/connection_check.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:simple_permissions/simple_permissions.dart';
+import 'package:colabore/app_strings.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -37,16 +38,26 @@ class _MainPageState extends State<MainPage>
     tabController = TabController(vsync: this, length: 2);
     isInternet();
     loadData();
-    initPlatformState();
+    initPermissions();
   }
 
-  initPlatformState() async {
+  initPermissions() async {
     try {
 
       //SimplePermissions.requestPermission(Permission.AccessFineLocation);
-      var re = await SimplePermissions.requestPermission(Permission.AlwaysLocation);
 
-      print(re);
+      var hasPermission = await SimplePermissions.checkPermission(Permission.AlwaysLocation);
+      print("tem a permissão "+hasPermission.toString());
+
+      if(hasPermission == false) {
+        var isPermited = await SimplePermissions.requestPermission(Permission.AlwaysLocation);
+
+        if(isPermited != PermissionStatus.authorized ){
+          _showDialog(AppStrings.userNotAuthorizedGPS);
+        }
+      }
+
+      //print(re);
       /*_isLocationPermission = await _location.hasPermission();
       var location = await _location.getLocation();
       _locationSubscription = _location.onLocationChanged().listen(_onLocationChange);
@@ -55,6 +66,33 @@ class _MainPageState extends State<MainPage>
 
     }catch(e){
     }
+  }
+
+  void _showDialog(String message,{Function onPressed}) {
+    // flutter defined function
+    showDialog(
+      context: _ctx,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Atenção"),
+          content: new Text(message),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Ok"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if(onPressed != null){
+                  onPressed();
+                }
+                //Navigator.of(context).pushNamed("/home");
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -88,7 +126,7 @@ class _MainPageState extends State<MainPage>
     return Scaffold(
       key: _scaffoldKey,
         appBar: AppBar(
-          elevation: 0.1,
+          elevation: 0,
           backgroundColor: AppStyle.backgroundAppBar,
           title: Text(
             'Jubarte',

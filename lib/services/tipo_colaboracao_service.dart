@@ -83,10 +83,8 @@ class ColaboracaoService {
         return null;
       }
     } catch (e) {
-
-      print("erro ao obter dados ");
       message = AppStrings.erroComunicarServidor;
-      print(e.toString());
+      print("getColaboracoes "+e.toString());
       return null;
     }
   }
@@ -96,7 +94,6 @@ class ColaboracaoService {
     try {//Map<String,dynamic>
 
       var body = jsonEncode(newColaboracao.toJson());
-
       /*var response =
       await http.post(AppSettings.rotaCriaColaboracao, headers: header,body: body);*/
 
@@ -118,9 +115,10 @@ class ColaboracaoService {
       var response = await request.send();
       var responseData = await response.stream.bytesToString(utf8);
 
+
       // listen for response
       /*response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
+
       });*/
 
       if (response.statusCode == 200) {
@@ -140,13 +138,13 @@ class ColaboracaoService {
       }
     } catch (e) {
       message = AppStrings.erroComunicarServidor;
-      print(e.toString());
+      print("postNewColaboracao "+e.toString());
       return false;
     }
     return true;
   }
 
-  /// cria uma nova colaboração
+  /// cria um novo usuario
   Future<Map<String,dynamic>> postNewUser(CadastroUserReq newUser) async {
     try {
 
@@ -179,7 +177,7 @@ class ColaboracaoService {
       }
     } catch (e) {
       message = AppStrings.erroComunicarServidor;
-      print(e.toString());
+      print("postNewUser "+e.toString());
       return null;
     }
     return null;

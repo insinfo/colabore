@@ -19,7 +19,7 @@ class ColaboracaoReq {
   }
 
   ColaboracaoReq.fromJson(Map<String, dynamic> json) {
-    print(json);
+
     try {
 
       if(json != null) {

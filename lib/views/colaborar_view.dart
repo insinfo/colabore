@@ -19,7 +19,7 @@ import 'package:colabore/services/tipo_colaboracao_service.dart';
 import 'package:colabore/models/colaborar.dart';
 import 'package:colabore/app_settings.dart';
 import 'package:colabore/widgets/dropdown_form_field.dart';
-
+import 'package:colabore/app_strings.dart';
 
 class ColaborarView extends StatefulWidget {
   final TipoColaboracao tipoColaboracao;
@@ -102,16 +102,35 @@ class ColaborarViewState extends State<ColaborarView> {
     } on PlatformException catch (e)
     {
       if (e.code == 'PERMISSION_DENIED') {
+
         error = 'Permission denied';
+
+        _showDialog(AppStrings.userNotAuthorizedGPS,onPressed:(){
+          Navigator.of(_ctx).pushNamed("/home");
+        });
+
       } else if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
         error =
             'Permission denied - please ask the user to enable it from the app settings';
+
+
+        _showDialog(AppStrings.userNotAuthorizedGPS,onPressed:(){
+          Navigator.of(_ctx).pushNamed("/home");
+        });
       }
+
+      _showDialog(AppStrings.erroGPS,onPressed:(){
+        Navigator.of(_ctx).pushNamed("/home");
+      });
+
       print("initLocationService "+e.message);
       location = null;
     }
     catch(ex)
     {
+      _showDialog(AppStrings.erroGPS,onPressed:(){
+        Navigator.of(_ctx).pushNamed("/home");
+      });
       print("initLocationService "+ex.message);
     }
   }
@@ -140,14 +159,14 @@ class ColaborarViewState extends State<ColaborarView> {
         .showSnackBar(new SnackBar(content: new Text(text)));
   }
 
-  void _showDialog(String message) {
+  void _showDialog(String message,{Function onPressed}) {
     // flutter defined function
     showDialog(
       context: _ctx,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Concluido"),
+          title: new Text("Atenção"),
           content: new Text(message),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
@@ -155,7 +174,7 @@ class ColaborarViewState extends State<ColaborarView> {
               child: new Text("Ok"),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).pushNamed("/home");
+                if(onPressed != null){onPressed();}
               },
             ),
           ],
@@ -184,7 +203,7 @@ class ColaborarViewState extends State<ColaborarView> {
     setState(() => _isProcessing = true);
 
     if(_currentLocation == null){
-      _showSnackBar("Você não autorizou o uso da localização!");
+      _showSnackBar("Você não autorizou o uso da localização, ou o GPS esta desativado!");
       return false;
     }
 
@@ -213,12 +232,13 @@ class ColaborarViewState extends State<ColaborarView> {
       colaborar.idOperador = AppSettings.user.idPessoa;
       colaborar.idSolicitante = AppSettings.user.idPessoa;
       colaborar.idSetor = tipoColaboracao.getIdSetor;
+
       await apiRest.postNewColaboracao(colaborar);
 
       setState(() {
         _saving = false;
       });
-      _showDialog(apiRest.message);
+      _showDialog(apiRest.message, onPressed: (){Navigator.of(_ctx).pushNamed("/home");});
 
     }else{
       _showSnackBar("Preencha os campos");
@@ -312,7 +332,7 @@ class ColaborarViewState extends State<ColaborarView> {
                   return 'Selecione o Bairro';
                 }
               },
-              onSaved: (val) => colaborar.bairro = val,
+              onSaved: (val) { colaborar.bairro = val;},
               decoration: InputDecoration(
                 icon: Icon(Icons.add_location),
                 border: UnderlineInputBorder(),

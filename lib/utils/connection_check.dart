@@ -22,7 +22,7 @@ class ConnectionCheck{
       if(result) {
 
         final internet = await InternetAddress.lookup('google.com')
-            .timeout(new Duration(seconds: 5));
+            .timeout(new Duration(seconds: 30));
 
         if (internet.isNotEmpty && internet[0].rawAddress.isNotEmpty) {
           result = true;

@@ -12,6 +12,7 @@ class AppSettings {
   static final rotaColaboracoes = webServiceBaseURL + "/ciente/api/app/solicitacao";
   static final rotaCriaColaboracao = webServiceBaseURL + "/ciente/api/app/solicitacao";
   static final rotaCriaUsuario = webServiceBaseURL + "/api/app/user";
+  static final rotaCodigoRecuperaAcesso = webServiceBaseURL + "/api/app/code/generate";
   static final userAgent = "appjubarte";
   static Usuario user;
   static String token = "";

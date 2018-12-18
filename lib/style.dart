@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppStyle{
 
-  static final backgroundDark = Color.fromRGBO(59, 68, 85,1);//64, 75, 96, .9
+  static final backgroundDark = Color.fromRGBO(58, 66, 86, 1.0);//64, 75, 96, .9
   static final textLight = Color.fromRGBO(255, 255, 255,1);
   static final textMedium = Color.fromRGBO(148, 160, 181,1);
   static final textDark = Color.fromRGBO(60, 60, 60,1);
@@ -14,6 +14,6 @@ class AppStyle{
   static final buttonPrimary = Color.fromRGBO(99, 251, 215, .9);//Color(0xFF5fd0d0)
   static final buttonBlue = Color(0xFF00aff8);//Color(0xFF5fd0d0)
 
-
+//hint text Color(0xFF7887A4)
 
 }
