@@ -13,6 +13,7 @@ import 'package:colabore/utils/utils.dart';
 import 'package:colabore/utils/email_validator.dart';
 import 'package:colabore/utils/birth_date_text_input_formatter.dart';
 import 'package:colabore/models/cadastro_user_req.dart';
+import 'package:colabore/widgets/masked_text_field.dart';
 
 class CadastroView extends StatefulWidget {
 
@@ -183,11 +184,14 @@ class CadastroViewState extends State<CadastroView> {
             ),*/
 
             //CPF
-            TextFormField(
+            MaskedTextField(
                onSaved: (val) {
-                 cadastroUserReq.pessoa.cpf = val;
+
+                 cadastroUserReq.pessoa.cpf = val
+                     .replaceAll(new RegExp('[^0-9]'), '');
                  print(cadastroUserReq.pessoa.cpf);
-               },
+
+               },mask: "xxx.xxx.xxx-xx",
               validator: (val) {
                 return Utils.validarCPF(val)
                     ? null
@@ -200,12 +204,11 @@ class CadastroViewState extends State<CadastroView> {
               ),
               keyboardType: TextInputType.number,
               //maxLength: 11,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(11),
+              /*inputFormatters: [
+                LengthLimitingTextInputFormatter(14),
                 WhitelistingTextInputFormatter.digitsOnly,
-              ],
+              ],*/
             ),
-
 
             //telefone
             TextFormField(
@@ -224,10 +227,10 @@ class CadastroViewState extends State<CadastroView> {
               ),
               keyboardType: TextInputType.phone,
               //maxLength: 11,
-              /*inputFormatters: [
-                LengthLimitingTextInputFormatter(11),
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(20),
                 WhitelistingTextInputFormatter.digitsOnly,
-              ],*/
+              ],
             ),
 
             //email
@@ -273,7 +276,8 @@ class CadastroViewState extends State<CadastroView> {
             ),
 
             //data nascimento
-            TextFormField(
+            MaskedTextField(
+              mask: "xx/xx/xxxx",
               onSaved: (val) {
                 cadastroUserReq.pessoa.dataNascimento = val.trim();
               },
@@ -282,15 +286,18 @@ class CadastroViewState extends State<CadastroView> {
                 hintText: 'Digite a data de seu nascimento',
                 labelText: 'Nascimento',
               ),
-              validator: (val) => val.length < 10
-                  ? 'Digite uma data valida!'
-                  : null,
+              validator: (val) {
+                return Utils.isDate(val)
+                    ? null
+                    : "Digite uma data valida!";
+              },
 
-              keyboardType: TextInputType.datetime,
+              keyboardType: TextInputType.number,
               //maxLength: 80,
-              inputFormatters: [
-                 LengthLimitingTextInputFormatter(80),
-              ],
+              /*inputFormatters: [
+                LengthLimitingTextInputFormatter(20),
+                WhitelistingTextInputFormatter.digitsOnly,
+              ],*/
             ),
 
             //sexo
@@ -392,6 +399,7 @@ class CadastroViewState extends State<CadastroView> {
              // activeColor: Colors.red,
             ),
 
+
             //botão
             Container(
                 padding: EdgeInsets.only(left: 0, top: 10.0,bottom: 20),
@@ -455,48 +463,5 @@ class CadastroViewState extends State<CadastroView> {
     senhaController.dispose();
     super.dispose();
   }
-
-      /*new TextFormField(
-        decoration: const InputDecoration(
-          icon: const Icon(Icons.person),
-          hintText: 'Digite seu nome e sobrenome',
-          labelText: 'Nome',
-        ),
-      ),
-      new TextFormField(
-        decoration: const InputDecoration(
-          icon: const Icon(Icons.calendar_today),
-          hintText: 'Enter your date of birth',
-          labelText: 'Dob',
-        ),
-        keyboardType: TextInputType.datetime,
-      ),
-      new TextFormField(
-        decoration: const InputDecoration(
-          icon: const Icon(Icons.phone),
-          hintText: 'Enter a phone number',
-          labelText: 'Phone',
-        ),
-        keyboardType: TextInputType.phone,
-        inputFormatters: [
-          WhitelistingTextInputFormatter.digitsOnly,
-        ],
-      ),
-      new TextFormField(
-        decoration: const InputDecoration(
-          icon: const Icon(Icons.email),
-          hintText: 'Enter a email address',
-          labelText: 'Email',
-        ),
-        keyboardType: TextInputType.emailAddress,
-      ),
-
-      new Container(
-          padding: const EdgeInsets.only(left: 40.0, top: 20.0),
-          child: new RaisedButton(
-            child: const Text('Submit'),
-            onPressed: null,
-          )),
-    */
 
 }

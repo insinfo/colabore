@@ -24,43 +24,64 @@ class RecuperaAcessoViewState extends State<RecuperaAcessoView> {
   String _novaSenha;
   String _repeteSenha;
   String _codigo;
+  String _codigoRetornado;
   bool _etapa1 = false;
+  bool _etapa2 = false;
+  TextEditingController _codigoTextFieldController = new TextEditingController();
   AuthService authService = new AuthService();
 
   Future _salvarNovaSenha() async {
     final form = _formKey2.currentState;
-    var aguard = await Future.delayed(const Duration(seconds: 1), () => "1");
-    _showDialog("Operação Realizada Com Sucesso", onPressed: () {
-      Navigator.of(context).pushNamed("/login");
-    });
+    //var aguard = await Future.delayed(const Duration(seconds: 1), () => "1");
+
+    if (form.validate()) {
+      form.save();
+      setState(() {
+        _isLoading = true;
+      });
+      var result = await authService.alterarSenha(_email, _novaSenha, _codigo);
+      setState(() {
+        _isLoading = false;
+      });
+      if (result != null) {
+        _showDialog(authService.message, onPressed: () {
+          Navigator.of(context).pushNamed("/login");
+        });
+      }else{
+        _showDialog(authService.message, onPressed: () {
+          Navigator.of(context).pushNamed("/login");
+        });
+      }
+    }
+
   }
 
   Future _requisitarNovaSenha() async {
     final form = _formKey1.currentState;
-    form.save();
 
-    setState(() {
-      _isLoading = true;
-    });
+    if (form.validate()) {
 
-    print('_requisitarNovaSenha');
+      form.save();
 
-    var codigo = await authService.requisitarNovaSenha(_email);
-
-    print(codigo);
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (codigo == null) {
-      _showDialog(authService.message, onPressed: () {
-        //Navigator.of(_ctx).pushNamed("/login");
-      });
-    } else {
       setState(() {
-        _etapa1 = true;
+        _isLoading = true;
       });
+
+      _codigoRetornado = await authService.requisitarNovaSenha(_email);
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (_codigoRetornado == null) {
+        _showDialog(authService.message, onPressed: () {
+          Navigator.of(_ctx).pushNamed("/login");
+        });
+      } else {
+        setState(() {
+          _etapa1 = true;
+        });
+      }
     }
   }
 
@@ -222,7 +243,7 @@ class RecuperaAcessoViewState extends State<RecuperaAcessoView> {
                   style: new TextStyle(
                     color: AppStyle.textLight,
                   ),
-                  //initialValue: '',
+                  //initialValue: 'insinfo2008@gmail.com',
                   decoration: InputDecoration(
                     hintText: 'Email',
                     hintStyle: TextStyle(color: AppStyle.textMedium),
@@ -262,11 +283,16 @@ class RecuperaAcessoViewState extends State<RecuperaAcessoView> {
               Container(
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 10),
                 child: TextFormField(
+                  controller: _codigoTextFieldController,
                   maxLength: 6,
                   onSaved: (val) {
                     _codigo = val;
                   },
-                  validator: (val) {},
+                  validator: (val) {
+                    print(_codigoTextFieldController.text);print(_codigoRetornado);
+                    return _codigoTextFieldController.text.toString() == _codigoRetornado.toString() ? null :
+                        "O codigo digitado esta incorreto.";
+                  },
                   keyboardType: TextInputType.text,
                   autofocus: false,
                   style: TextStyle(
@@ -293,9 +319,15 @@ class RecuperaAcessoViewState extends State<RecuperaAcessoView> {
               Container(
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 10),
                 child: TextFormField(
-                  maxLength: 6,
-                  onSaved: (val) {},
-                  validator: (val) {},
+                  maxLength: 25,
+                  onSaved: (val) {
+                    _novaSenha = val;
+                  },
+                  validator: (val) {
+                    return val.length < 8
+                        ? "A senha deve ter pelo menos 8 caracteres."
+                        : null;
+                  },
                   keyboardType: TextInputType.text,
                   autofocus: false,
                   style: TextStyle(
@@ -313,7 +345,12 @@ class RecuperaAcessoViewState extends State<RecuperaAcessoView> {
       ],
     ));
 
-    list.add(_buildBtn('SALVAR', _salvarNovaSenha));
+    if(_isLoading) {
+      list.add(loading);
+    }else{
+      list.add(_buildBtn('SALVAR', _salvarNovaSenha));
+    }
+
     return Form(
       key: _formKey2,
       autovalidate: false,

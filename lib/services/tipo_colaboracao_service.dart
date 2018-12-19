@@ -12,6 +12,8 @@ import 'package:colabore/models/colaborar.dart';
 import 'package:colabore/models/cadastro_user_req.dart';
 import 'package:colabore/app_strings.dart';
 
+import 'package:flutter/services.dart' show rootBundle;
+
 class ColaboracaoService {
 
   //singleton
@@ -149,14 +151,17 @@ class ColaboracaoService {
     try {
 
       var dataToSend = jsonEncode(newUser.toJson());
+      print(dataToSend);
 
       var h = {"User-Agent": AppSettings.userAgent, "Content-Type": "application/json"};
 
       var response =
       await http.post(AppSettings.rotaCriaUsuario, headers: h,body: dataToSend);
 
-
       statusCode = response.statusCode;
+
+      print(response.body);
+      print(statusCode);
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -250,5 +255,14 @@ class ColaboracaoService {
       "Zona Zen"
     ];
     return _bairros;
+  }
+
+  Future<String> getTermos() async {
+    try {
+      return await rootBundle.loadString("assets/termos.txt");
+    }catch(e){
+      print("getTermos "+e.toString());
+      return "erro ao carregar termos";
+    }
   }
 }

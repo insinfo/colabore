@@ -90,7 +90,7 @@ class LoginViewState extends State<LoginView> {
       style: TextStyle(
         color: Colors.white,
       ),
-      initialValue: 'teste@teste.com',
+      //initialValue: 'teste@teste.com',
       decoration: InputDecoration(
         // labelText:'Email',
         //   labelStyle: TextStyle(color: Colors.white)
@@ -108,7 +108,7 @@ class LoginViewState extends State<LoginView> {
             : null;
       },
       autofocus: false,
-      initialValue: '123456',
+      //initialValue: '123456',
       obscureText: true,
       style: TextStyle(
         color: Colors.white,
