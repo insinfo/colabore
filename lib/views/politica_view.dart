@@ -4,6 +4,7 @@ import 'package:colabore/app_settings.dart';
 import 'package:colabore/style.dart';
 import 'package:colabore/services/tipo_colaboracao_service.dart';
 import 'package:flutter_html_view/flutter_html_view.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class PoliticaView extends StatefulWidget {
   @override
@@ -15,7 +16,7 @@ class PoliticaView extends StatefulWidget {
 class PoliticaViewState extends State<PoliticaView> {
   BuildContext _ctx;
   static const BACKGROUND_IMAGE = 'assets/profile_header_background.png';
-  String _politica ='<body><p style="color:#00000;"><strong>Dental Assistants:</strong></p>';
+  String _politica ='';
   ColaboracaoService colaboracaoService = new ColaboracaoService();
 
   @override
@@ -29,8 +30,6 @@ class PoliticaViewState extends State<PoliticaView> {
     setState(() {
       _politica = r;
     });
-    print(_politica);
-
   }
 
   _buildDiagonalImageBackground(BuildContext context) {
@@ -111,21 +110,33 @@ class PoliticaViewState extends State<PoliticaView> {
 
     return Scaffold(
         appBar: null,
-        backgroundColor: Color.fromRGBO(20, 20, 20, 1), //#3b4455
+        backgroundColor: AppStyle.backgroundDark, //#3b4455
         body: SingleChildScrollView(
           child: Column(
             children:
             <Widget>[
               _header(context),
-              Container(
+              Container(padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                 width: double.infinity,
-                child: new HtmlView(
+                child:
+                new MarkdownBody(data: _politica,
+                  styleSheet: MarkdownStyleSheet(
+                    /*h1: TextStyle(color: AppStyle.textDark),
+                    h2: TextStyle(color: AppStyle.textDark),
+                    h3: TextStyle(color: AppStyle.textDark),
+                    h4: TextStyle(color: AppStyle.textDark),
+                    h5: TextStyle(color: AppStyle.textDark),
+                    h6: TextStyle(color: AppStyle.textDark),*/
+                    //p: TextStyle(),
+                  ),
+                ),
+                /*new HtmlView(
                   data: _politica,
                   baseURL: "", // optional, type String
                   onLaunchFail: (url) { // optional, type Function
                   print("launch $url failed");
                 }
-                ),
+                ),*/
               ),
             ]
           )

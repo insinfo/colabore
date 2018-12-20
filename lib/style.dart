@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class AppStyle{
 
   static final backgroundDark = Color.fromRGBO(58, 66, 86, 1.0);//64, 75, 96, .9
+  static final backgroundLight = Color.fromRGBO(250, 250, 250, 1.0);//64, 75, 96, .9
   static final textLight = Color.fromRGBO(255, 255, 255,1);
   static final textMedium = Color.fromRGBO(148, 160, 181,1);
   static final textDark = Color.fromRGBO(60, 60, 60,1);

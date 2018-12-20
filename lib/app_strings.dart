@@ -11,4 +11,5 @@ class AppStrings{
   static final String codigoAlteraSenhaExpirou = "Código de recuperação de acesso expirado, va para tela de login e repita o processo de recuperação de acesso!";
   static final String codigoAlteraSenhaInvalido = "Código Invalido";
   static final String usuarioNotExist = "Usuario não existe na nossa base de dados.";
+
 }

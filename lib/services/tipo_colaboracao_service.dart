@@ -116,8 +116,8 @@ class ColaboracaoService {
 
       var response = await request.send();
       var responseData = await response.stream.bytesToString(utf8);
-
-
+      print(responseData);
+      print(response.statusCode);
       // listen for response
       /*response.stream.transform(utf8.decoder).listen((value) {
 
@@ -134,7 +134,13 @@ class ColaboracaoService {
       } else if (response.statusCode == 400) {
         message = AppStrings.erroComunicarServidor;
         return false;
-      } else {
+      } else if (response.statusCode == 406) {
+        message = "Você preencheu um campo com valo incorreto";
+        return false;
+      } else if (response.statusCode == 409) {
+        message = "Já exite uma colaboração para este serviço proximo a este local.";
+        return false;
+      }else {
         message = AppStrings.erroComunicarServidor;
         return false;
       }
