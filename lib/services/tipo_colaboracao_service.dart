@@ -179,7 +179,10 @@ class ColaboracaoService {
       } else if (response.statusCode == 409) {
         message = AppStrings.usuarioJaExiste;
         return null;
-      } else if (response.statusCode == 400) {
+      } else if (response.statusCode == 406) {
+        message = "Você preencheu um campo do formulário errado, por favor verifique os dados e tente novamente";
+        return null;
+      }else if (response.statusCode == 400) {
         message = AppStrings.erroComunicarServidor;
         return null;
       } else {
