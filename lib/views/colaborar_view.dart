@@ -184,7 +184,7 @@ class ColaborarViewState extends State<ColaborarView> {
   }
 
   Future<bool> _submit() async {
-    /* 
+    /*
     print(currentLocation["latitude"]);
     print(currentLocation["longitude"]);
     print(currentLocation["accuracy"]);
@@ -322,31 +322,35 @@ class ColaborarViewState extends State<ColaborarView> {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           children: <Widget>[
+
             //botão para obter foto
             _imageFile == null ? _buildButtonTakePhoto() : _buildPhotoPreview(),
 
+
             //bairro
             DropdownFormField<String>(
-              validator: (value) {
-                if (value == null) {
-                  return 'Selecione o Bairro';
-                }
-              },
-              onSaved: (val) { colaborar.bairro = val;},
-              decoration: InputDecoration(
-                icon: Icon(Icons.add_location),
-                border: UnderlineInputBorder(),
-               // filled: true,
-                labelText: 'Bairro',
+                validator: (value) {
+                  if (value == null) {
+                    return 'Selecione o Bairro';
+                  }
+                },
+                onSaved: (val) { colaborar.bairro = val;},
+                decoration: InputDecoration(
+                  //icon: Icon(Icons.add_location),
+                  border: UnderlineInputBorder(),
+                  // filled: true,
+                  labelText: 'Bairro',
+                ),
+                initialValue: null,
+                items: _bairros.map((String value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
-              initialValue: null,
-              items: _bairros.map((String value) {
-                return DropdownMenuItem(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
+
+
 
 
             //Logradouro
