@@ -39,15 +39,19 @@ class ColaboracaoService {
       if (response.statusCode == 200) {
         message = AppStrings.sucesso;
         var tipoColaboracaoResponse = TipoColaboracaoReq.fromJson(json.decode(response.body));
+        //print("getTiposColaboracao "+response.body);
         return tipoColaboracaoResponse.listTipoColaboracao;
 
       } else if (response.statusCode == 401) {
+        //print("getTiposColaboracao "+response.body);
         message = AppStrings.credencialInvalida;
         return null;
       } else if (response.statusCode == 400) {
+        //print("getTiposColaboracao "+response.body);
         message = AppStrings.erroComunicarServidor;
         return null;
       } else {
+        //print("getTiposColaboracao "+response.body);
         message = AppStrings.erroComunicarServidor;
         return null;
       }
